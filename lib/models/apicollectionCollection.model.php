@@ -66,8 +66,7 @@ class apicollectionCollectionModel extends waModel
             $this->deleteSpecFile($collection['spec_file']);
         }
         
-        /** @var apicollectionRequestHistoryModel $historyModel */
-        $historyModel = waModel::factory('apicollectionRequestHistory');
+        $historyModel = new apicollectionRequestHistoryModel();
         $historyModel->deleteByCollection($id);
         $this->deleteByField('id', $id);
     }
