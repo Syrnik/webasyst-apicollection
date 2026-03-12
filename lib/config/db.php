@@ -1,0 +1,62 @@
+<?php
+return [
+    'apicollection_collection' => [
+        'id'         => ['int', 11, 'null' => 0, 'autoincrement' => 1],
+        'contact_id' => ['int', 11, 'null' => 0],
+        'is_shared'  => ['tinyint', 1, 'null' => 0, 'default' => 0],
+        'title'      => ['varchar', 255, 'null' => 0],
+        'spec_url'   => ['text', null, 'null' => 1],
+        'spec_file'  => ['varchar', 500, 'null' => 1],
+        'spec_source'=> ['enum', "'url','file'", 'null' => 0, 'default' => 'url'],
+        'auth_type'  => ['enum', "'none','bearer','basic','apikey'", 'null' => 0, 'default' => 'none'],
+        'auth_data'  => ['text'],
+        'custom_headers' => ['text', null, 'null' => 1],
+        'created'    => ['datetime'],
+        'updated'    => ['datetime'],
+        ':keys' => [
+            'PRIMARY' => 'id',
+            'contact_id' => 'contact_id',
+        ],
+    ],
+    'apicollection_request_history' => [
+        'id'              => ['int', 11, 'null' => 0, 'autoincrement' => 1],
+        'collection_id'   => ['int', 11, 'null' => 0],
+        'contact_id'      => ['int', 11, 'null' => 0],
+        'method'          => ['varchar', 10],
+        'path'            => ['varchar', 1000],
+        'request_data'    => ['mediumtext'],
+        'response_status' => ['int', 11],
+        'response_body'   => ['mediumtext'],
+        'executed_at'     => ['datetime'],
+        ':keys' => [
+            'PRIMARY'       => 'id',
+            'collection_id' => 'collection_id',
+            'contact_id'    => 'contact_id',
+        ],
+    ],
+    'apicollection_environment' => [
+        'id'              => ['int', 11, 'null' => 0, 'autoincrement' => 1],
+        'contact_id'      => ['int', 11, 'null' => 0],
+        'is_shared'       => ['tinyint', 1, 'null' => 0, 'default' => 0],
+        'name'            => ['varchar', 255, 'null' => 0],
+        'base_url'        => ['varchar', 1000, 'null' => 1],
+        'auth_type'       => ['enum', "'none','bearer','basic','apikey'", 'null' => 0, 'default' => 'none'],
+        'auth_data'       => ['text', null, 'null' => 1],
+        'custom_headers'  => ['text', null, 'null' => 1],
+        'sort'            => ['int', 11, 'null' => 0, 'default' => 0],
+        'created'         => ['datetime'],
+        'updated'         => ['datetime'],
+        ':keys' => [
+            'PRIMARY'    => 'id',
+            'contact_id' => 'contact_id',
+        ],
+    ],
+    'apicollection_environment_selected' => [
+        'contact_id'     => ['int', 11, 'null' => 0],
+        'collection_id'  => ['int', 11, 'null' => 0],
+        'environment_id' => ['int', 11, 'null' => 1],
+        ':keys' => [
+            'PRIMARY' => ['contact_id', 'collection_id'],
+        ],
+    ],
+];

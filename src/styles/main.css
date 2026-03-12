@@ -1,0 +1,287 @@
+/* ============================================================
+   API Collection — Кастомные стили
+   ============================================================ */
+
+/* Используем CSS-переменные Webasyst */
+:root {
+  --apic-font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+/* Действия в списке коллекций */
+.apic-col-actions {
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.menu li:hover .apic-col-actions {
+  opacity: 1;
+}
+
+.apic-col-action {
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: background-color 0.2s;
+}
+
+.apic-col-action:hover {
+  background-color: var(--background-color);
+}
+
+.apic-col-action--delete:hover {
+  background-color: var(--background-color-error);
+}
+
+/* Пустое состояние */
+.apic-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 40px;
+  text-align: center;
+}
+
+.apic-empty__icon {
+  font-size: 48px;
+  opacity: 0.5;
+}
+
+/* Статусы HTTP */
+.apic-status-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--apic-font-mono);
+}
+
+.apic-status-0 {
+  background-color: var(--background-color-error);
+  color: var(--text-color-error);
+}
+
+.apic-status-2xx {
+  background-color: var(--background-color-success);
+  color: var(--text-color-success);
+}
+
+.apic-status-3xx {
+  background-color: var(--background-color-info);
+  color: var(--text-color-info);
+}
+
+.apic-status-4xx {
+  background-color: var(--background-color-warning);
+  color: var(--text-color-warning);
+}
+
+.apic-status-5xx {
+  background-color: var(--background-color-error);
+  color: var(--text-color-error);
+}
+
+/* Панель ответа */
+.apic-response-panel {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.apic-response-panel__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background-color: var(--background-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.apic-response-panel__body {
+  padding: 12px;
+}
+
+.apic-response-body {
+  font-family: var(--apic-font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  padding: 12px;
+  border-radius: var(--border-radius);
+  max-height: 500px;
+  overflow-y: auto;
+  margin: 0;
+}
+
+/* Схема запроса (drawer) */
+.apic-schema-view {
+  font-family: var(--apic-font-mono);
+  font-size: 12px;
+}
+
+.apic-schema-object {
+  margin-bottom: 12px;
+  padding: 12px;
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  border-left: 3px solid var(--accent-color);
+}
+
+.apic-schema-object-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.apic-schema-object-desc {
+  color: var(--text-color-secondary);
+  margin-bottom: 8px;
+  font-size: 11px;
+}
+
+.apic-schema-properties {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.apic-schema-property {
+  padding: 8px;
+  background-color: var(--background-color-blank);
+  border-radius: var(--border-radius);
+}
+
+.apic-schema-property-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.apic-schema-key {
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
+.apic-schema-type {
+  font-size: 10px;
+  padding: 2px 6px;
+  background-color: var(--background-color);
+  border-radius: 3px;
+  color: var(--text-color-secondary);
+}
+
+.apic-schema-property-desc {
+  font-size: 11px;
+  color: var(--text-color-secondary);
+  margin-top: 4px;
+}
+
+.apic-schema-ref-inline {
+  font-size: 11px;
+  color: var(--accent-color);
+  margin-top: 4px;
+}
+
+.apic-schema-ref-box {
+  padding: 8px;
+  background-color: var(--background-color-info);
+  border-radius: var(--border-radius);
+  color: var(--text-color-info);
+}
+
+.apic-schema-array {
+  margin-left: 16px;
+  padding-left: 12px;
+  border-left: 2px solid var(--border-color);
+}
+
+/* Drawer */
+.apic-drawer-section {
+  margin-bottom: 20px;
+}
+
+.apic-drawer-section-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.apic-drawer-description {
+  padding: 8px 12px;
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  border-left: 3px solid var(--accent-color);
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+
+.apic-drawer-example {
+  font-family: var(--apic-font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  padding: 12px;
+  border-radius: var(--border-radius);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.apic-drawer-empty {
+  padding: 40px;
+  text-align: center;
+  color: var(--text-color-secondary);
+}
+
+/* Dropdown окружений */
+.apic-env-dropdown {
+  position: relative;
+}
+
+/* История запросов */
+.apic-history {
+  margin-top: 20px;
+}
+
+/* Тулбар */
+.apic-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Список заголовков HTTP (dl/dt/dd с Grid) */
+.apic-headers-list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 0.75rem;
+  font-family: var(--apic-font-mono);
+  font-size: 14px;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.apic-headers-list dt {
+  font-weight: 600;
+  text-align: right;
+  margin: 0;
+  padding: 0;
+}
+
+.apic-headers-list dd {
+  margin: 0;
+  padding: 0;
+  word-break: break-word;
+}

@@ -1,0 +1,377 @@
+/* ============================================================
+   API Collection — стили бэкенда
+   Префикс: .apic-  (BEM)
+   UI 2.0: цвета через переменные wa-2.0.css
+   ============================================================ */
+
+:root {
+    /* HTTP method badge цвета — семантические, аналогов в --wa нет */
+    --apic-get-bg:         #e6f4ea; --apic-get-color:     #1e7e34;
+    --apic-post-bg:        #e8eeff; --apic-post-color:    #2045d4;
+    --apic-put-bg:         #fff3e0; --apic-put-color:     #e65100;
+    --apic-delete-bg:      #fdeaea; --apic-delete-color:  #c62828;
+    --apic-patch-bg:       #fffde7; --apic-patch-color:   #827717;
+    --apic-head-bg:        #f3e5f5; --apic-head-color:    #6a1b9a;
+    --apic-options-bg:     #e0f7fa; --apic-options-color: #006064;
+
+    /* Блок кода (тёмный — намеренный дизайн) */
+    --apic-code-bg:    #1e1e2e;
+    --apic-code-color: #cdd6f4;
+
+    --apic-font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+/* ── Тулбар основной области ──────────────────────────────── */
+
+.apic-toolbar {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--background-color-blank);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+/* ── Действия в пункте .menu (редактировать / удалить) ───── */
+
+.apic-col-actions {
+    display: flex;
+    gap: 0;
+    opacity: 0;
+    transition: opacity 0.15s;
+    /* переопределяем монохромный цвет .count — иконки цветные не нужны */
+    color: inherit;
+}
+
+.menu li:hover .apic-col-actions,
+.menu li.selected .apic-col-actions {
+    opacity: 1;
+}
+
+.apic-col-action {
+    cursor: pointer;
+    padding: 1px 4px;
+    border-radius: 0.375rem;
+    font-size: 12px;
+    color: var(--text-color-hint);
+    transition: color 0.15s, background 0.15s;
+    line-height: 1.6;
+}
+
+.apic-col-action:hover {
+    color: var(--text-color);
+    background: color-mix(in srgb, var(--text-color) 8%, transparent);
+}
+
+.apic-col-action--delete:hover {
+    color: var(--red);
+}
+
+
+
+/* ── Панель ответа ────────────────────────────────────────── */
+
+.apic-response-panel {
+    margin-top: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.apic-response-panel__header {
+    padding: 8px 16px;
+    background: var(--background-color);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.apic-response-panel__body {
+    padding: 12px 16px;
+}
+
+/* Тёмный блок кода — намеренный, не меняется с темой */
+.apic-response-body {
+    background: var(--apic-code-bg);
+    color: var(--apic-code-color);
+    font-family: var(--apic-font-mono);
+    font-size: 12px;
+    padding: 12px;
+    border-radius: 0.75rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 400px;
+    overflow-y: auto;
+    line-height: 1.5;
+}
+
+.apic-response-headers {
+    font-family: var(--apic-font-mono);
+    font-size: 11px;
+    color: var(--text-color);
+    margin-bottom: 10px;
+    padding: 8px;
+    background: var(--background-color);
+    border-radius: 0.375rem;
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+/* Статус-коды */
+.apic-status-badge {
+    display: inline-block;
+    font-family: var(--apic-font-mono);
+    font-weight: 700;
+    font-size: 14px;
+    padding: 2px 8px;
+    border-radius: 0.375rem;
+}
+
+.apic-status-2xx { background: var(--apic-get-bg);    color: var(--apic-get-color); }
+.apic-status-3xx { background: var(--apic-post-bg);   color: var(--apic-post-color); }
+.apic-status-4xx { background: var(--apic-put-bg);    color: var(--apic-put-color); }
+.apic-status-5xx { background: var(--apic-delete-bg); color: var(--apic-delete-color); }
+.apic-status-0   { background: color-mix(in srgb, var(--text-color) 10%, transparent); color: var(--text-color-hint); }
+
+/* ── История запросов ─────────────────────────────────────── */
+
+.apic-history {
+    margin-top: 20px;
+}
+
+.apic-history__title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-color-hint);
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.apic-history-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 8px;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    font-size: 12px;
+    border: 1px solid transparent;
+    transition: background 0.12s;
+}
+
+.apic-history-item:hover {
+    background: var(--background-color);
+    border-color: var(--border-color);
+}
+
+.apic-history-item__path {
+    flex: 1;
+    font-family: var(--apic-font-mono);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text-color);
+}
+
+.apic-history-item__time {
+    font-size: 10px;
+    color: var(--text-color-hint);
+    white-space: nowrap;
+}
+
+/* Кнопки: используем системные классы .button .blue/.light-gray/.red + .small */
+
+/* ── Содержимое drawer'а (схема, примеры) ──────────────── */
+
+.apic-drawer-section {
+    margin-bottom: 20px;
+}
+
+.apic-drawer-section-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-color-hint);
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.apic-drawer-description {
+    font-size: 13px;
+    color: var(--text-color);
+    line-height: 1.5;
+    padding: 8px;
+    background: var(--background-color);
+    border-radius: 0.375rem;
+}
+
+.apic-drawer-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-color-hint);
+}
+
+.apic-drawer-empty p {
+    margin: 0;
+    font-size: 13px;
+}
+
+.apic-drawer-example {
+    background: var(--apic-code-bg);
+    color: var(--apic-code-color);
+    font-family: var(--apic-font-mono);
+    font-size: 11px;
+    padding: 12px;
+    border-radius: 0.375rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 300px;
+    overflow-y: auto;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* ── Схема (модель) ──────────────────────────────────────── */
+
+.apic-schema-view {
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.apic-schema-object,
+.apic-schema-array {
+    margin-bottom: 18px;
+}
+
+.apic-schema-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-color-hint);
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.apic-schema-properties {
+    margin-left: 18px;
+    padding-left: 18px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.apic-schema-property {
+    margin-bottom: 16px;
+}
+
+.apic-schema-property-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.apic-schema-key {
+    color: var(--accent-color);
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.apic-schema-type {
+    font-size: 13px;
+    color: var(--text-color-hint);
+    background: var(--background-color);
+    padding: 4px 10px;
+    border-radius: 0.375rem;
+    font-weight: 600;
+}
+
+.apic-schema-object-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.apic-schema-object-desc {
+    font-size: 14px;
+    color: var(--text-color);
+    margin-bottom: 14px;
+    padding: 12px;
+    background: var(--background-color);
+    border-radius: 0.375rem;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+.apic-schema-ref-box {
+    display: inline-block;
+    padding: 12px 16px;
+    background: var(--background-color);
+    border-left: 4px solid var(--accent-color);
+    border-radius: 0.375rem;
+    font-size: 15px;
+    color: var(--accent-color);
+    margin: 12px 0;
+    font-weight: 600;
+}
+
+.apic-schema-ref-inline {
+    display: inline-block;
+    font-size: 14px;
+    color: var(--accent-color);
+    background: var(--background-color);
+    padding: 6px 12px;
+    border-radius: 0.375rem;
+    margin-top: 8px;
+    font-weight: 700;
+}
+
+.apic-schema-required {
+    color: var(--red);
+    font-weight: 700;
+}
+
+.apic-schema-property-desc {
+    font-size: 13px;
+    color: var(--text-color-hint);
+    margin-top: 6px;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+.apic-schema-ref {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+/* ── Пустое состояние ─────────────────────────────────────── */
+
+.apic-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 12px;
+    color: var(--text-color-hint);
+    text-align: center;
+    padding: 40px;
+}
+
+.apic-empty__icon {
+    font-size: 48px;
+    opacity: 0.5;
+}

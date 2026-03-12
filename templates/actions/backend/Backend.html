@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$wa->appName()} &mdash; {$wa->title()}</title>
+    {$wa->css()}
+    <script src="{$wa_url}wa-content/js/jquery/jquery-3.6.0.min.js"></script>
+    <script src="{$wa_url}wa-content/js/jquery/jquery-migrate-3.3.2.min.js"></script>
+    <script src="{$wa_url}wa-content/js/jquery-wa/wa.js?v={$wa->version(true)}"></script>
+    <script>
+    window.APICOLLECTION = {
+        contactId: {$contactId|intval}
+    };
+    </script>
+</head>
+<body>
+
+<div id="wa">
+
+    {$wa->header()}
+
+    <div id="wa-app">
+        <div id="apicollection-app">
+            <div class="apic-loading">Загрузка приложения...</div>
+        </div>
+    </div>
+
+</div>
+
+{$wa->js()}
+
+<script>
+(function() {
+    var s = document.createElement('script');
+    s.src = '{$wa_app_static_url}js/apicollection.js?v={$wa->version()}';
+    document.body.appendChild(s);
+})();
+</script>
+
+</body>
+</html>
