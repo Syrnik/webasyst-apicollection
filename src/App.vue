@@ -140,8 +140,7 @@ function openAddForm(): void {
 // Открыть форму редактирования
 async function openEditForm(col: Collection): Promise<void> {
   try {
-    const full = await getCollectionById(col.id);
-    editingCollection.value = full;
+    editingCollection.value = await getCollectionById(col.id);
   } catch {
     editingCollection.value = { ...col };
   }
@@ -185,10 +184,9 @@ function openEnvAddForm(): void {
 // Открыть форму редактирования окружения
 async function openEnvEditForm(env: Environment): Promise<void> {
   showEnvManager.value = false;
-  
+
   try {
-    const full = await getEnvironmentById(env.id);
-    editingEnvironment.value = full;
+    editingEnvironment.value = await getEnvironmentById(env.id);
   } catch {
     editingEnvironment.value = { ...env };
   }
@@ -231,3 +229,7 @@ watch(selectedCollection, async (col) => {
   }
 });
 </script>
+
+<style scoped>
+@import '@/styles/main.css';
+</style>

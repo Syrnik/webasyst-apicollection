@@ -76,12 +76,10 @@ export function useApiRequest() {
         payload['environment_id'] = environment.id;
       }
 
-      const res = await apiFetch<ApiRequestResponse>('proxyFetch', {
+      response.value = await apiFetch<ApiRequestResponse>('proxyFetch', {
         method: 'POST',
         data: payload
       });
-
-      response.value = res;
     } catch (e) {
       error.value = e instanceof Error ? e.message : 'Ошибка выполнения';
     } finally {

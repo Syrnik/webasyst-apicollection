@@ -2,7 +2,9 @@
    API Collection — Кастомные стили
    ============================================================ */
 
-/* Используем CSS-переменные Webasyst */
+@import './variables.css';
+
+/* Дополнительные переменные приложения */
 :root {
   --apic-font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
 }
