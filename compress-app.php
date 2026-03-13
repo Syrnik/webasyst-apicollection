@@ -879,7 +879,9 @@ class AppCompressor
         if (file_exists($archivePath)) {
             $mtime = max(filemtime($archivePath), filectime($archivePath));
             $this->outf('Removing previous archive from %s', date('Y-m-d H:i:s', $mtime));
-            unlink($archivePath);
+            if (!unlink($archivePath)) {
+                throw new RuntimeException("Cannot remove existing archive: {$archivePath}");
+            }
         }
 
         // Write .files.md5
@@ -889,7 +891,9 @@ class AppCompressor
         // Build .tar (PharData works with uncompressed tar first)
         $tarPath = $this->appPath . '/' . $this->appId . '.tar';
         if (file_exists($tarPath)) {
-            unlink($tarPath);
+            if (!unlink($tarPath)) {
+                throw new RuntimeException("Cannot remove existing tar file: {$tarPath}");
+            }
         }
 
         $time = microtime(true);
