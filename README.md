@@ -6,6 +6,10 @@
 
 ---
 
+[![PHP Compatibility](https://github.com/Syrnik/webasyst-apicollection/actions/workflows/main.yml/badge.svg)](https://github.com/Syrnik/webasyst-apicollection/actions/workflows/main.yml)
+
+---
+
 ## Возможности
 
 - **Коллекции** — сохраняй ссылки на `swagger.json` / `openapi.json` или загружай файлы спецификаций локально
