@@ -65,9 +65,9 @@ return array(
     'tsconfig.json',
     'tsconfig.app.json',
     'package.json',
-    'package-lock.son',
+    'package-lock.json',
     '*.md',
     'AGENTS.md',
     '*/AGENTS.md',
-    'compress-app.php'
+    'compress-app.php',
 );
