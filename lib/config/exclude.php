@@ -69,4 +69,5 @@ return array(
     '*.md',
     'AGENTS.md',
     '*/AGENTS.md',
+    'compress-app.php'
 );
