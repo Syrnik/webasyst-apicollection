@@ -21,7 +21,7 @@ jobs:
           php-version: '8.2'
 
       - name: Run compress-app.php
-        run: php compress-app.php
+        run: php compress-app.php apicollection -app-path .
 
       - name: Get tag message
         id: tag_message
