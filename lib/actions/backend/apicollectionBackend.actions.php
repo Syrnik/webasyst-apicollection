@@ -199,7 +199,7 @@ class apicollectionBackendActions extends waJsonActions
                 throw new waException('Неверное имя файла');
             }
 
-            $filePath = wa()->getDataPath('apicollection/specs/' . $file, true);
+            $filePath = wa()->getDataPath('specs/' . $file, false);
             if (!file_exists($filePath)) {
                 throw new waException('Файл не найден', 404);
             }
@@ -375,8 +375,8 @@ class apicollectionBackendActions extends waJsonActions
             }
             // YAML валидируется на фронтенде при парсинге
 
-            // Сохраняем файл в хранилище
-            $uploadDir = wa()->getDataPath('apicollection/specs/', true);
+            // Сохраняем файл в защищённое хранилище (не публичное)
+            $uploadDir = wa()->getDataPath('specs', false);
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
@@ -386,7 +386,7 @@ class apicollectionBackendActions extends waJsonActions
             $random = bin2hex(random_bytes(4));
             $savedExt = ($ext === 'json') ? 'json' : 'yaml';
             $newFilename = "spec_{$timestamp}_{$random}.{$savedExt}";
-            $newPath = $uploadDir . $newFilename;
+            $newPath = $uploadDir . DIRECTORY_SEPARATOR . $newFilename;
 
             if (!move_uploaded_file($file['tmp_name'], $newPath)) {
                 throw new waException('Не удалось сохранить файл');
