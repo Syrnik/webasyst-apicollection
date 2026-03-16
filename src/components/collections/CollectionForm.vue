@@ -84,7 +84,7 @@
             <!-- Загрузка файла -->
             <template v-if="form.spec_source === 'file'">
               <div class="field">
-                <div class="name">Файл спецификации (.json) *</div>
+                <div class="name">Файл спецификации (.json, .yaml, .yml) *</div>
                 <div class="value">
                   <div 
                     v-if="form.spec_file" 
@@ -106,7 +106,7 @@
                     <input
                       ref="fileInputRef"
                       type="file"
-                      accept=".json"
+                      accept=".json,.yaml,.yml"
                       @change="handleFileUpload"
                       :disabled="uploading"
                       style="display:block;margin-bottom:8px"

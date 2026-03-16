@@ -1,0 +1,60 @@
+/* ============================================================
+   Webasyst UI 2.0 — CSS Custom Properties (Light Theme)
+   ============================================================ */
+
+:root {
+  /* Colors */
+  --primary-color: #4a90e2;
+  --accent-color: #4a90e2;
+  --success-color: #52c41a;
+  --warning-color: #faad14;
+  --error-color: #f5222d;
+  --info-color: #1890ff;
+
+  /* Background Colors */
+  --background-color: #ffffff;
+  --background-color-blank: #fafafa;
+  --background-color-primary: #4a90e2;
+  --background-color-success: #f6ffed;
+  --background-color-warning: #fffbe6;
+  --background-color-error: #fff1f0;
+  --background-color-info: #e6f7ff;
+
+  /* Text Colors */
+  --text-color: #000000;
+  --text-color-secondary: #666666;
+  --text-color-success: #52c41a;
+  --text-color-warning: #faad14;
+  --text-color-error: #f5222d;
+  --text-color-info: #1890ff;
+
+  /* Border Colors */
+  --border-color: #d9d9d9;
+  --border-color-light: #efefef;
+  --border-radius: 4px;
+
+  /* Shadow */
+  --box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+/* Dark Theme (optional) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #1f1f1f;
+    --background-color-blank: #141414;
+    --text-color: #ffffff;
+    --text-color-secondary: #999999;
+    --border-color: #434343;
+    --border-color-light: #303030;
+
+    --background-color-success: #162312;
+    --background-color-warning: #2b2111;
+    --background-color-error: #2a1215;
+    --background-color-info: #111b26;
+
+    --text-color-success: #95de64;
+    --text-color-warning: #ffc53d;
+    --text-color-error: #ff7875;
+    --text-color-info: #69b1ff;
+  }
+}

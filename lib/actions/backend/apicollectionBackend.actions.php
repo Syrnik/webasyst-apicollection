@@ -188,7 +188,7 @@ class apicollectionBackendActions extends waJsonActions
             }
 
             // Безопасность: проверяем, что это валидное имя файла
-            if (preg_match('#[/\\\\]#', $file) || !preg_match('#^spec_\d+_[a-f0-9]+\.json$#', $file)) {
+            if (preg_match('#[/\\\\]#', $file) || !preg_match('#^spec_\d+_[a-f0-9]+\.(json|yaml|yml)$#', $file)) {
                 throw new waException('Неверное имя файла');
             }
 
@@ -208,12 +208,17 @@ class apicollectionBackendActions extends waJsonActions
                 $content = substr($content, 3);
             }
 
-            $json = json_decode($content, true);
-            if ($json === null) {
-                throw new waException('Файл содержит некорректный JSON');
+            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            if ($ext === 'json') {
+                $parsed = json_decode($content, true);
+                if ($parsed === null) {
+                    throw new waException('Файл содержит некорректный JSON');
+                }
+                $this->response = ['content' => $content, 'format' => 'json'];
+            } else {
+                // YAML — отдаём строку, фронтенд распарсит через js-yaml
+                $this->response = ['content' => $content, 'format' => 'yaml'];
             }
-
-            $this->response = $json;
         } catch (Exception $e) {
             $this->setError($e->getMessage());
         }
@@ -282,23 +287,29 @@ class apicollectionBackendActions extends waJsonActions
                 $responseBody = substr($responseBody, 3);
             }
 
-            // Парсим JSON
-            $json = json_decode($responseBody, true);
-            if ($json === null) {
-                // Если JSON не распарсился, показываем первые 200 символов ответа для отладки
-                $preview = substr($responseBody, 0, 200);
-                if (strlen($responseBody) > 200) {
-                    $preview .= '...';
+            // Определяем формат по Content-Type или расширению URL
+            $contentTypeHeader = $net->getResponseHeader('content-type') ?? '';
+            $isYaml = preg_match('#(yaml|yml)#i', $contentTypeHeader)
+                || preg_match('#\.(yaml|yml)(\?|$)#i', $specUrl);
+
+            if ($isYaml) {
+                // YAML — отдаём строку, фронтенд распарсит через js-yaml
+                $this->response = ['content' => $responseBody, 'format' => 'yaml'];
+            } else {
+                $json = json_decode($responseBody, true);
+                if ($json === null) {
+                    // Если JSON не распарсился, показываем первые 200 символов ответа для отладки
+                    $preview = substr($responseBody, 0, 200);
+                    if (strlen($responseBody) > 200) {
+                        $preview .= '...';
+                    }
+                    throw new waException('Ответ содержит некорректный JSON. Ответ: ' . $preview);
                 }
-                throw new waException('Ответ содержит некорректный JSON. Ответ: ' . $preview);
+                if (!isset($json['paths']) && !isset($json['swagger']) && !isset($json['openapi'])) {
+                    throw new waException('Ответ не похож на OpenAPI/Swagger спецификацию (отсутствуют поля paths, swagger или openapi)');
+                }
+                $this->response = ['content' => $responseBody, 'format' => 'json'];
             }
-
-            // Проверяем, что это похоже на OpenAPI/Swagger спецификацию
-            if (!isset($json['paths']) && !isset($json['swagger']) && !isset($json['openapi'])) {
-                throw new waException('Ответ не похож на OpenAPI/Swagger спецификацию (отсутствуют поля paths, swagger или openapi)');
-            }
-
-            $this->response = $json;
         } catch (Exception $e) {
             $this->setError($e->getMessage());
         }
@@ -321,8 +332,8 @@ class apicollectionBackendActions extends waJsonActions
             // Проверяем расширение файла
             $filename = basename($file['name']);
             $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-            if (!in_array($ext, ['json'])) {
-                throw new waException('Допускаются только файлы .json');
+            if (!in_array($ext, ['json', 'yaml', 'yml'])) {
+                throw new waException('Допускаются только файлы .json, .yaml, .yml');
             }
 
             // Проверяем размер (максимум 10 МБ)
@@ -342,15 +353,16 @@ class apicollectionBackendActions extends waJsonActions
                 $content = substr($content, 3);
             }
 
-            $json = json_decode($content, true);
-            if ($json === null) {
-                throw new waException('Файл содержит некорректный JSON');
+            if ($ext === 'json') {
+                $parsed = json_decode($content, true);
+                if ($parsed === null) {
+                    throw new waException('Файл содержит некорректный JSON');
+                }
+                if (!isset($parsed['paths']) && !isset($parsed['swagger']) && !isset($parsed['openapi'])) {
+                    throw new waException('Файл не похож на OpenAPI/Swagger спецификацию (отсутствует поле paths, swagger или openapi)');
+                }
             }
-
-            // Проверяем, что это похоже на OpenAPI/Swagger спецификацию
-            if (!isset($json['paths']) && !isset($json['swagger']) && !isset($json['openapi'])) {
-                throw new waException('Файл не похож на OpenAPI/Swagger спецификацию (отсутствует поле paths, swagger или openapi)');
-            }
+            // YAML валидируется на фронтенде при парсинге
 
             // Сохраняем файл в хранилище
             $uploadDir = wa()->getDataPath('apicollection/specs/', true);
@@ -361,7 +373,8 @@ class apicollectionBackendActions extends waJsonActions
             // Генерируем уникальное имя файла
             $timestamp = time();
             $random = bin2hex(random_bytes(4));
-            $newFilename = "spec_{$timestamp}_{$random}.json";
+            $savedExt = ($ext === 'json') ? 'json' : 'yaml';
+            $newFilename = "spec_{$timestamp}_{$random}.{$savedExt}";
             $newPath = $uploadDir . $newFilename;
 
             if (!move_uploaded_file($file['tmp_name'], $newPath)) {
