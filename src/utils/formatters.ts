@@ -60,6 +60,30 @@ export function extractBaseUrl(specUrl: string): string {
 }
 
 /**
+ * Извлекает base URL из спецификации (из поля servers)
+ */
+export function extractBaseUrlFromSpec(spec: any): string {
+  if (!spec) return '';
+  
+  // OpenAPI 3.x: используем первый сервер из массива servers
+  if (spec.servers && Array.isArray(spec.servers) && spec.servers.length > 0) {
+    const firstServer = spec.servers[0];
+    if (typeof firstServer === 'object' && firstServer.url) {
+      return firstServer.url;
+    }
+  }
+  
+  // Swagger 2.0: используем host + basePath
+  if (spec.host) {
+    const scheme = spec.schemes?.[0] || 'https';
+    const basePath = spec.basePath || '';
+    return `${scheme}://${spec.host}${basePath}`;
+  }
+  
+  return '';
+}
+
+/**
  * Форматирует дату/время для отображения (относительное время)
  */
 export function timeAgo(dateString: string): string {
