@@ -18,8 +18,8 @@ class apicollectionBackendActions extends waJsonActions
 
     protected function preExecute(): void
     {
-        $this->collectionModel  = new apicollectionCollectionModel();
-        $this->historyModel     = new apicollectionRequestHistoryModel();
+        $this->collectionModel = new apicollectionCollectionModel();
+        $this->historyModel = new apicollectionRequestHistoryModel();
         $this->environmentModel = new apicollectionEnvironmentModel();
         $this->envSelectedModel = new apicollectionEnvironmentSelectedModel();
     }
@@ -29,15 +29,15 @@ class apicollectionBackendActions extends waJsonActions
     public function collectionsAction(): void
     {
         try {
-            $contactId   = (int) wa()->getUser()->getId();
+            $contactId = (int)wa()->getUser()->getId();
             $collections = $this->collectionModel->getForUser($contactId);
 
             // Не возвращаем auth_data в списке, приводим типы
             foreach ($collections as &$c) {
                 unset($c['auth_data']);
-                $c['id']         = (int) $c['id'];
-                $c['contact_id'] = (int) $c['contact_id'];
-                $c['is_shared']  = (int) $c['is_shared'];
+                $c['id'] = (int)$c['id'];
+                $c['contact_id'] = (int)$c['contact_id'];
+                $c['is_shared'] = (int)$c['is_shared'];
             }
             unset($c);
 
@@ -52,17 +52,16 @@ class apicollectionBackendActions extends waJsonActions
     public function collectionSaveAction(): void
     {
         try {
-
-            $contactId = (int) wa()->getUser()->getId();
-            $id        = (int) waRequest::post('id');
-            $title     = trim((string) waRequest::post('title'));
+            $contactId = (int)wa()->getUser()->getId();
+            $id = (int)waRequest::post('id');
+            $title = trim((string)waRequest::post('title'));
             $specSource = waRequest::post('spec_source', 'url');  // 'url' или 'file'
-            $specUrl   = trim((string) waRequest::post('spec_url', ''));
-            $specFile  = trim((string) waRequest::post('spec_file', ''));
-            $isShared  = (int)(bool) waRequest::post('is_shared');
-            $authType  = waRequest::post('auth_type', 'none');
-            $authData  = waRequest::post('auth_data', '');
-            $customHeaders = waRequest::post('custom_headers', []);
+            $specUrl = trim((string)waRequest::post('spec_url', ''));
+            $specFile = trim((string)waRequest::post('spec_file', ''));
+            $isShared = (int)(bool)waRequest::post('is_shared');
+            $authType = waRequest::post('auth_type', 'none');
+            $authData = waRequest::post('auth_data', '');
+            $customHeaders = waRequest::post('custom_headers');
 
             // Валидация
             if (!$title) {
@@ -99,9 +98,17 @@ class apicollectionBackendActions extends waJsonActions
             }
 
             // custom_headers: нормализуем в JSON-строку
+            if (is_string($customHeaders)) {
+                try {
+                    $customHeaders = waUtils::jsonDecode($customHeaders, true);
+                } catch (waException $e) {
+                    $customHeaders = null;
+                }
+            }
+
             if (is_array($customHeaders)) {
                 // Фильтруем пустые заголовки
-                $customHeaders = array_filter($customHeaders, function($h) {
+                $customHeaders = array_filter($customHeaders, function ($h) {
                     return !empty($h['name']) || !empty($h['value']);
                 });
                 $customHeaders = $customHeaders ? json_encode($customHeaders, JSON_UNESCAPED_UNICODE) : null;
@@ -110,13 +117,13 @@ class apicollectionBackendActions extends waJsonActions
             }
 
             $data = [
-                'title'        => $title,
-                'spec_source'  => $specSource,
-                'spec_url'     => $specSource === 'url' ? $specUrl : null,
-                'spec_file'    => $specSource === 'file' ? $specFile : null,
-                'is_shared'    => $isShared,
-                'auth_type'    => in_array($authType, ['none', 'bearer', 'basic', 'apikey']) ? $authType : 'none',
-                'auth_data'    => $authData ?: null,
+                'title'          => $title,
+                'spec_source'    => $specSource,
+                'spec_url'       => $specSource === 'url' ? $specUrl : null,
+                'spec_file'      => $specSource === 'file' ? $specFile : null,
+                'is_shared'      => $isShared,
+                'auth_type'      => in_array($authType, ['none', 'bearer', 'basic', 'apikey']) ? $authType : 'none',
+                'auth_data'      => $authData ?: null,
                 'custom_headers' => $customHeaders,
             ];
 
@@ -138,7 +145,7 @@ class apicollectionBackendActions extends waJsonActions
     public function collectionDeleteAction(): void
     {
         try {
-            $id = (int) waRequest::post('id');
+            $id = (int)waRequest::post('id');
             if (!$id) {
                 throw new waException('Не передан id');
             }
@@ -154,9 +161,9 @@ class apicollectionBackendActions extends waJsonActions
     public function collectionGetAction(): void
     {
         try {
-            $contactId    = (int) wa()->getUser()->getId();
-            $id           = (int) waRequest::get('id');
-            $collection   = $this->collectionModel->getCollection($id, $contactId);
+            $contactId = (int)wa()->getUser()->getId();
+            $id = (int)waRequest::get('id');
+            $collection = $this->collectionModel->getCollection($id, $contactId);
 
             if (!$collection) {
                 throw new waException('Коллекция не найдена', 404);
@@ -167,9 +174,9 @@ class apicollectionBackendActions extends waJsonActions
                 unset($collection['auth_data']);
             }
 
-            $collection['id']         = (int) $collection['id'];
-            $collection['contact_id'] = (int) $collection['contact_id'];
-            $collection['is_shared']  = (int) $collection['is_shared'];
+            $collection['id'] = (int)$collection['id'];
+            $collection['contact_id'] = (int)$collection['contact_id'];
+            $collection['is_shared'] = (int)$collection['is_shared'];
 
             $this->response = $collection;
         } catch (Exception $e) {
@@ -188,11 +195,11 @@ class apicollectionBackendActions extends waJsonActions
             }
 
             // Безопасность: проверяем, что это валидное имя файла
-            if (preg_match('#[/\\\\]#', $file) || !preg_match('#^spec_\d+_[a-f0-9]+\.json$#', $file)) {
+            if (preg_match('#[/\\\\]#', $file) || !preg_match('#^spec_\d+_[a-f0-9]+\.(json|yaml|yml)$#', $file)) {
                 throw new waException('Неверное имя файла');
             }
 
-            $filePath = wa()->getDataPath('apicollection/specs/' . $file, true);
+            $filePath = wa()->getDataPath('specs/' . $file, false);
             if (!file_exists($filePath)) {
                 throw new waException('Файл не найден', 404);
             }
@@ -208,12 +215,17 @@ class apicollectionBackendActions extends waJsonActions
                 $content = substr($content, 3);
             }
 
-            $json = json_decode($content, true);
-            if ($json === null) {
-                throw new waException('Файл содержит некорректный JSON');
+            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            if ($ext === 'json') {
+                $parsed = json_decode($content, true);
+                if ($parsed === null) {
+                    throw new waException('Файл содержит некорректный JSON');
+                }
+                $this->response = ['content' => $content, 'format' => 'json'];
+            } else {
+                // YAML — отдаём строку, фронтенд распарсит через js-yaml
+                $this->response = ['content' => $content, 'format' => 'yaml'];
             }
-
-            $this->response = $json;
         } catch (Exception $e) {
             $this->setError($e->getMessage());
         }
@@ -224,9 +236,9 @@ class apicollectionBackendActions extends waJsonActions
     public function proxyLoadSpecAction(): void
     {
         try {
-            $collectionId = (int) waRequest::post('collection_id');
-            $specUrl      = trim((string) waRequest::post('spec_url', ''));
-            $contactId    = (int) wa()->getUser()->getId();
+            $collectionId = (int)waRequest::post('collection_id');
+            $specUrl = trim((string)waRequest::post('spec_url', ''));
+            $contactId = (int)wa()->getUser()->getId();
 
             if (!$specUrl) {
                 throw new waException('URL спецификации не указан');
@@ -247,10 +259,10 @@ class apicollectionBackendActions extends waJsonActions
             // Загружаем спецификацию через waNet (обходит CORS)
             $net = new waNet(
                 [
-                    'timeout'           => 30,
-                    'format'            => waNet::FORMAT_RAW,
-                    'request_format'    => waNet::FORMAT_RAW,
-                    'verify'            => false,
+                    'timeout'            => 30,
+                    'format'             => waNet::FORMAT_RAW,
+                    'request_format'     => waNet::FORMAT_RAW,
+                    'verify'             => false,
                     'expected_http_code' => null,
                 ]
             );
@@ -262,7 +274,7 @@ class apicollectionBackendActions extends waJsonActions
             }
 
             // Проверяем HTTP статус код
-            $httpCode = (int) $net->getResponseHeader('http_code');
+            $httpCode = (int)$net->getResponseHeader('http_code');
             if ($httpCode >= 400) {
                 $errorMsg = "HTTP {$httpCode}";
                 if ($httpCode === 404) {
@@ -282,23 +294,31 @@ class apicollectionBackendActions extends waJsonActions
                 $responseBody = substr($responseBody, 3);
             }
 
-            // Парсим JSON
-            $json = json_decode($responseBody, true);
-            if ($json === null) {
-                // Если JSON не распарсился, показываем первые 200 символов ответа для отладки
-                $preview = substr($responseBody, 0, 200);
-                if (strlen($responseBody) > 200) {
-                    $preview .= '...';
+            // Определяем формат по Content-Type или расширению URL
+            $contentTypeHeader = $net->getResponseHeader('content-type') ?? '';
+            $isYaml = preg_match('#(yaml|yml)#i', $contentTypeHeader)
+                || preg_match('#\.(yaml|yml)(\?|$)#i', $specUrl);
+
+            if ($isYaml) {
+                // YAML — отдаём строку, фронтенд распарсит через js-yaml
+                $this->response = ['content' => $responseBody, 'format' => 'yaml'];
+            } else {
+                $json = json_decode($responseBody, true);
+                if ($json === null) {
+                    // Если JSON не распарсился, показываем первые 200 символов ответа для отладки
+                    $preview = substr($responseBody, 0, 200);
+                    if (strlen($responseBody) > 200) {
+                        $preview .= '...';
+                    }
+                    throw new waException('Ответ содержит некорректный JSON. Ответ: ' . $preview);
                 }
-                throw new waException('Ответ содержит некорректный JSON. Ответ: ' . $preview);
+                if (!isset($json['paths']) && !isset($json['swagger']) && !isset($json['openapi'])) {
+                    throw new waException(
+                        'Ответ не похож на OpenAPI/Swagger спецификацию (отсутствуют поля paths, swagger или openapi)'
+                    );
+                }
+                $this->response = ['content' => $responseBody, 'format' => 'json'];
             }
-
-            // Проверяем, что это похоже на OpenAPI/Swagger спецификацию
-            if (!isset($json['paths']) && !isset($json['swagger']) && !isset($json['openapi'])) {
-                throw new waException('Ответ не похож на OpenAPI/Swagger спецификацию (отсутствуют поля paths, swagger или openapi)');
-            }
-
-            $this->response = $json;
         } catch (Exception $e) {
             $this->setError($e->getMessage());
         }
@@ -321,8 +341,8 @@ class apicollectionBackendActions extends waJsonActions
             // Проверяем расширение файла
             $filename = basename($file['name']);
             $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-            if (!in_array($ext, ['json'])) {
-                throw new waException('Допускаются только файлы .json');
+            if (!in_array($ext, ['json', 'yaml', 'yml'])) {
+                throw new waException('Допускаются только файлы .json, .yaml, .yml');
             }
 
             // Проверяем размер (максимум 10 МБ)
@@ -342,18 +362,21 @@ class apicollectionBackendActions extends waJsonActions
                 $content = substr($content, 3);
             }
 
-            $json = json_decode($content, true);
-            if ($json === null) {
-                throw new waException('Файл содержит некорректный JSON');
+            if ($ext === 'json') {
+                $parsed = json_decode($content, true);
+                if ($parsed === null) {
+                    throw new waException('Файл содержит некорректный JSON');
+                }
+                if (!isset($parsed['paths']) && !isset($parsed['swagger']) && !isset($parsed['openapi'])) {
+                    throw new waException(
+                        'Файл не похож на OpenAPI/Swagger спецификацию (отсутствует поле paths, swagger или openapi)'
+                    );
+                }
             }
+            // YAML валидируется на фронтенде при парсинге
 
-            // Проверяем, что это похоже на OpenAPI/Swagger спецификацию
-            if (!isset($json['paths']) && !isset($json['swagger']) && !isset($json['openapi'])) {
-                throw new waException('Файл не похож на OpenAPI/Swagger спецификацию (отсутствует поле paths, swagger или openapi)');
-            }
-
-            // Сохраняем файл в хранилище
-            $uploadDir = wa()->getDataPath('apicollection/specs/', true);
+            // Сохраняем файл в защищённое хранилище (не публичное)
+            $uploadDir = wa()->getDataPath('specs', false);
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
@@ -361,8 +384,9 @@ class apicollectionBackendActions extends waJsonActions
             // Генерируем уникальное имя файла
             $timestamp = time();
             $random = bin2hex(random_bytes(4));
-            $newFilename = "spec_{$timestamp}_{$random}.json";
-            $newPath = $uploadDir . $newFilename;
+            $savedExt = ($ext === 'json') ? 'json' : 'yaml';
+            $newFilename = "spec_{$timestamp}_{$random}.{$savedExt}";
+            $newPath = $uploadDir . DIRECTORY_SEPARATOR . $newFilename;
 
             if (!move_uploaded_file($file['tmp_name'], $newPath)) {
                 throw new waException('Не удалось сохранить файл');
@@ -398,18 +422,17 @@ class apicollectionBackendActions extends waJsonActions
 
     public function proxyFetchAction(): void
     {
-        $contactId    = (int) wa()->getUser()->getId();
+        $contactId = (int)wa()->getUser()->getId();
         $collectionId = 0;
-        $historyData  = [];
+        $historyData = [];
 
         try {
-
-            $collectionId = (int) waRequest::post('collection_id');
-            $method       = strtoupper(trim((string) waRequest::post('method', 'GET')));
-            $path         = (string) waRequest::post('path', '');
-            $queryParams  = waRequest::post('query_params', []);
+            $collectionId = (int)waRequest::post('collection_id');
+            $method = strtoupper(trim((string)waRequest::post('method', 'GET')));
+            $path = (string)waRequest::post('path', '');
+            $queryParams = waRequest::post('query_params', []);
             $extraHeaders = waRequest::post('headers', []);
-            $bodyRaw      = waRequest::post('body', '');
+            $bodyRaw = waRequest::post('body', '');
 
             if (!in_array($method, ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'])) {
                 throw new waException("Недопустимый метод: {$method}");
@@ -421,7 +444,7 @@ class apicollectionBackendActions extends waJsonActions
             }
 
             // ── Окружение ──────────────────────────────────────────────────────
-            $environmentId = (int) waRequest::post('environment_id', 0);
+            $environmentId = (int)waRequest::post('environment_id', 0);
             $environment = null;
 
             if ($environmentId) {
@@ -429,7 +452,7 @@ class apicollectionBackendActions extends waJsonActions
             }
 
             // Base URL: ручной ввод > окружение > коллекция
-            $baseUrlOverride = trim((string) waRequest::post('base_url'));
+            $baseUrlOverride = trim((string)waRequest::post('base_url'));
             if ($baseUrlOverride) {
                 $baseUrl = rtrim($baseUrlOverride, '/');
             } elseif ($environment && !empty($environment['base_url'])) {
@@ -515,21 +538,21 @@ class apicollectionBackendActions extends waJsonActions
             // Выполняем запрос
             $net = new waNet(
                 [
-                    'timeout'           => 30,
-                    'format'            => waNet::FORMAT_RAW,
-                    'request_format'    => waNet::FORMAT_RAW,
-                    'verify'            => false,
+                    'timeout'            => 30,
+                    'format'             => waNet::FORMAT_RAW,
+                    'request_format'     => waNet::FORMAT_RAW,
+                    'verify'             => false,
                     'expected_http_code' => null,  // Не бросать исключения при любых HTTP-кодах
                 ],
                 $headers  // Кастомные заголовки передаются вторым параметром
             );
 
-            $responseBody   = '';
+            $responseBody = '';
             $responseStatus = 0;
             $responseHeaders = [];
 
             try {
-                $responseBody   = $net->query($url, $postData, $method);
+                $responseBody = $net->query($url, $postData, $method);
             } catch (waNetException $e) {
                 $msg = $e->getMessage();
                 if (stripos($msg, 'timed out') !== false || stripos($msg, 'timeout') !== false) {
@@ -540,8 +563,8 @@ class apicollectionBackendActions extends waJsonActions
             }
 
             // Получаем заголовки и статус ВСЕГДА, даже при ошибке
-            $responseStatus = (int) $net->getResponseHeader('http_code');
-            $allHeaders     = $net->getResponseHeader();
+            $responseStatus = (int)$net->getResponseHeader('http_code');
+            $allHeaders = $net->getResponseHeader();
 
             // Нормализуем заголовки в ассоциативный массив
             if (is_array($allHeaders)) {
@@ -566,7 +589,7 @@ class apicollectionBackendActions extends waJsonActions
 
             // Сохраняем в историю
             $historyData['response_status'] = $responseStatus;
-            $historyData['response_body']   = $responseBody;
+            $historyData['response_body'] = $responseBody;
             $this->historyModel->addEntry($historyData);
 
             $this->response = [
@@ -578,10 +601,11 @@ class apicollectionBackendActions extends waJsonActions
             // Сохраняем ошибку в историю, если коллекция была определена
             if ($collectionId && $historyData) {
                 $historyData['response_status'] = 0;
-                $historyData['response_body']   = $e->getMessage();
+                $historyData['response_body'] = $e->getMessage();
                 try {
                     $this->historyModel->addEntry($historyData);
-                } catch (Exception $ignored) {}
+                } catch (Exception $ignored) {
+                }
             }
             $this->setError($e->getMessage());
         }
@@ -592,15 +616,15 @@ class apicollectionBackendActions extends waJsonActions
     public function environmentsAction(): void
     {
         try {
-            $contactId    = (int) wa()->getUser()->getId();
+            $contactId = (int)wa()->getUser()->getId();
             $environments = $this->environmentModel->getForUser($contactId);
 
             foreach ($environments as &$env) {
                 unset($env['auth_data']); // Не возвращаем секреты в списке
-                $env['id']         = (int) $env['id'];
-                $env['contact_id'] = (int) $env['contact_id'];
-                $env['is_shared']  = (int) $env['is_shared'];
-                $env['sort']       = (int) $env['sort'];
+                $env['id'] = (int)$env['id'];
+                $env['contact_id'] = (int)$env['contact_id'];
+                $env['is_shared'] = (int)$env['is_shared'];
+                $env['sort'] = (int)$env['sort'];
             }
             unset($env);
 
@@ -615,15 +639,15 @@ class apicollectionBackendActions extends waJsonActions
     public function environmentSaveAction(): void
     {
         try {
-            $contactId = (int) wa()->getUser()->getId();
-            $id        = (int) waRequest::post('id');
-            $name      = trim((string) waRequest::post('name'));
-            $baseUrl   = trim((string) waRequest::post('base_url', ''));
-            $isShared  = (int)(bool) waRequest::post('is_shared');
-            $authType  = waRequest::post('auth_type', 'none');
-            $authData  = waRequest::post('auth_data', '');
+            $contactId = (int)wa()->getUser()->getId();
+            $id = (int)waRequest::post('id');
+            $name = trim((string)waRequest::post('name'));
+            $baseUrl = trim((string)waRequest::post('base_url', ''));
+            $isShared = (int)(bool)waRequest::post('is_shared');
+            $authType = waRequest::post('auth_type', 'none');
+            $authData = waRequest::post('auth_data', '');
             $customHeaders = waRequest::post('custom_headers', []);
-            $sort      = (int) waRequest::post('sort', 0);
+            $sort = (int)waRequest::post('sort', 0);
 
             if (!$name) {
                 throw new waException('Поле «Название» обязательно');
@@ -645,10 +669,13 @@ class apicollectionBackendActions extends waJsonActions
             }
 
             if (is_array($customHeaders)) {
-                $customHeaders = array_filter($customHeaders, function($h) {
+                $customHeaders = array_filter($customHeaders, function ($h) {
                     return !empty($h['name']) || !empty($h['value']);
                 });
-                $customHeaders = $customHeaders ? json_encode(array_values($customHeaders), JSON_UNESCAPED_UNICODE) : null;
+                $customHeaders = $customHeaders ? json_encode(
+                    array_values($customHeaders),
+                    JSON_UNESCAPED_UNICODE
+                ) : null;
             } else {
                 $customHeaders = null;
             }
@@ -670,7 +697,7 @@ class apicollectionBackendActions extends waJsonActions
                 $id = $this->environmentModel->add($data);
             }
 
-            $this->response = ['id' => (int) $id];
+            $this->response = ['id' => (int)$id];
         } catch (Exception $e) {
             $this->setError($e->getMessage());
         }
@@ -681,7 +708,7 @@ class apicollectionBackendActions extends waJsonActions
     public function environmentDeleteAction(): void
     {
         try {
-            $id = (int) waRequest::post('id');
+            $id = (int)waRequest::post('id');
             if (!$id) {
                 throw new waException('Не передан id');
             }
@@ -697,8 +724,8 @@ class apicollectionBackendActions extends waJsonActions
     public function environmentGetAction(): void
     {
         try {
-            $contactId   = (int) wa()->getUser()->getId();
-            $id          = (int) waRequest::get('id');
+            $contactId = (int)wa()->getUser()->getId();
+            $id = (int)waRequest::get('id');
             $environment = $this->environmentModel->getEnvironment($id, $contactId);
 
             if (!$environment) {
@@ -710,10 +737,10 @@ class apicollectionBackendActions extends waJsonActions
                 unset($environment['auth_data']);
             }
 
-            $environment['id']         = (int) $environment['id'];
-            $environment['contact_id'] = (int) $environment['contact_id'];
-            $environment['is_shared']  = (int) $environment['is_shared'];
-            $environment['sort']       = (int) $environment['sort'];
+            $environment['id'] = (int)$environment['id'];
+            $environment['contact_id'] = (int)$environment['contact_id'];
+            $environment['is_shared'] = (int)$environment['is_shared'];
+            $environment['sort'] = (int)$environment['sort'];
 
             $this->response = $environment;
         } catch (Exception $e) {
@@ -726,8 +753,8 @@ class apicollectionBackendActions extends waJsonActions
     public function environmentSelectAction(): void
     {
         try {
-            $contactId     = (int) wa()->getUser()->getId();
-            $collectionId  = (int) waRequest::post('collection_id');
+            $contactId = (int)wa()->getUser()->getId();
+            $collectionId = (int)waRequest::post('collection_id');
             $environmentId = waRequest::post('environment_id');
 
             if (!$collectionId) {
@@ -741,7 +768,7 @@ class apicollectionBackendActions extends waJsonActions
             }
 
             // Если environment_id передан — проверяем доступ к окружению
-            $envId = $environmentId !== null && $environmentId !== '' ? (int) $environmentId : null;
+            $envId = $environmentId !== null && $environmentId !== '' ? (int)$environmentId : null;
             if ($envId) {
                 $env = $this->environmentModel->getEnvironment($envId, $contactId);
                 if (!$env) {
@@ -761,8 +788,8 @@ class apicollectionBackendActions extends waJsonActions
     public function environmentSelectedAction(): void
     {
         try {
-            $contactId    = (int) wa()->getUser()->getId();
-            $collectionId = (int) waRequest::get('collection_id');
+            $contactId = (int)wa()->getUser()->getId();
+            $collectionId = (int)waRequest::get('collection_id');
 
             if (!$collectionId) {
                 throw new waException('Не передан collection_id');
@@ -774,10 +801,10 @@ class apicollectionBackendActions extends waJsonActions
             if ($envId) {
                 $environment = $this->environmentModel->getEnvironment($envId, $contactId);
                 if ($environment) {
-                    $environment['id']         = (int) $environment['id'];
-                    $environment['contact_id'] = (int) $environment['contact_id'];
-                    $environment['is_shared']  = (int) $environment['is_shared'];
-                    $environment['sort']       = (int) $environment['sort'];
+                    $environment['id'] = (int)$environment['id'];
+                    $environment['contact_id'] = (int)$environment['contact_id'];
+                    $environment['is_shared'] = (int)$environment['is_shared'];
+                    $environment['sort'] = (int)$environment['sort'];
                 }
             }
 
@@ -795,8 +822,8 @@ class apicollectionBackendActions extends waJsonActions
     public function historyAction(): void
     {
         try {
-            $contactId    = (int) wa()->getUser()->getId();
-            $collectionId = (int) waRequest::get('collection_id');
+            $contactId = (int)wa()->getUser()->getId();
+            $collectionId = (int)waRequest::get('collection_id');
 
             if (!$collectionId) {
                 throw new waException('Не передан collection_id');
@@ -821,7 +848,7 @@ class apicollectionBackendActions extends waJsonActions
     private function extractBaseUrl(string $specUrl): string
     {
         $parsed = parse_url($specUrl);
-        $base   = ($parsed['scheme'] ?? 'https') . '://' . ($parsed['host'] ?? '');
+        $base = ($parsed['scheme'] ?? 'https') . '://' . ($parsed['host'] ?? '');
         if (!empty($parsed['port'])) {
             $base .= ':' . $parsed['port'];
         }
@@ -847,7 +874,7 @@ class apicollectionBackendActions extends waJsonActions
 
             case 'apikey':
                 $header = $authData['header'] ?? '';
-                $key    = $authData['key'] ?? '';
+                $key = $authData['key'] ?? '';
                 return ($header && $key) ? [$header => $key] : [];
 
             default:

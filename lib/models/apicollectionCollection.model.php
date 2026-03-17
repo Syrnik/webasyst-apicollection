@@ -72,12 +72,12 @@ class apicollectionCollectionModel extends waModel
     }
 
     /**
-     * Удаляет файл спецификации из хранилища.
+     * Удаляет файл спецификации из защищённого хранилища.
      */
     public function deleteSpecFile(string $filePath): void
     {
         try {
-            $fullPath = wa()->getDataPath('apicollection/specs/' . basename($filePath), true);
+            $fullPath = wa()->getDataPath('specs/' . basename($filePath), false);
             if (file_exists($fullPath)) {
                 unlink($fullPath);
             }

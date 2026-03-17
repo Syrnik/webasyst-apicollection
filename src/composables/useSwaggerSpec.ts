@@ -1,7 +1,18 @@
 import { ref, watch, type Ref } from 'vue';
+import * as yaml from 'js-yaml';
 import { apiFetch } from '@/api';
 import { buildTree, setCurrentSpec } from '@/utils/swagger';
 import type { SwaggerSpec, EndpointTag, Collection } from '@/types';
+
+/**
+ * Парсит спецификацию в зависимости от формата
+ */
+function parseSpec(content: string, format: 'json' | 'yaml'): SwaggerSpec {
+  if (format === 'yaml') {
+    return yaml.load(content) as SwaggerSpec;
+  }
+  return JSON.parse(content) as SwaggerSpec;
+}
 
 /**
  * Composable для загрузки и парсинга Swagger/OpenAPI спецификаций
@@ -32,9 +43,10 @@ export function useSwaggerSpec(collection: Ref<Collection | null>) {
       
       // Загрузка из файла
       if (collection.value.spec_source === 'file' && collection.value.spec_file) {
-        loadedSpec = await apiFetch<SwaggerSpec>('collectionGetSpec', {
+        const result = await apiFetch<{ content: string; format: 'json' | 'yaml' }>('collectionGetSpec', {
           data: { file: collection.value.spec_file }
         });
+        loadedSpec = parseSpec(result.content, result.format);
       }
       // Загрузка из URL (напрямую через fetch)
       else if (collection.value.spec_url) {
@@ -42,7 +54,11 @@ export function useSwaggerSpec(collection: Ref<Collection | null>) {
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
-        loadedSpec = await response.json();
+        const contentType = response.headers.get('content-type') ?? '';
+        const text = await response.text();
+        const isYaml = /yaml|yml/i.test(contentType)
+          || /\.(yaml|yml)(\?|$)/i.test(collection.value.spec_url);
+        loadedSpec = parseSpec(text, isYaml ? 'yaml' : 'json');
       } else {
         throw new Error('Спецификация не найдена');
       }

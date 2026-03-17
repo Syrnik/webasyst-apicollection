@@ -97,8 +97,7 @@ import { useSwaggerSpec } from '@/composables/useSwaggerSpec';
 import { useApiRequest } from '@/composables/useApiRequest';
 import { useRequestHistory } from '@/composables/useRequestHistory';
 import { useEndpointCache } from '@/composables/useEndpointCache';
-import { methodBadgeClass } from '@/utils/formatters';
-import { extractBaseUrl } from '@/utils/formatters';
+import { methodBadgeClass, extractBaseUrl, extractBaseUrlFromSpec } from '@/utils/formatters';
 import type { Collection, Environment, EndpointItem } from '@/types';
 
 interface Props {
@@ -143,13 +142,22 @@ if (props.collection.spec_url) {
   baseUrl.value = extractBaseUrl(props.collection.spec_url);
 }
 
-// Обновление base URL при изменении окружения
-watch(() => props.activeEnvironment, (newEnv) => {
+// Обновление base URL при изменении спецификации или окружения
+watch([() => spec.value, () => props.activeEnvironment], ([newSpec, newEnv]) => {
   if (newEnv?.base_url) {
     // Если выбрано окружение с base_url — используем его
     baseUrl.value = newEnv.base_url;
+  } else if (newSpec) {
+    // Пытаемся получить base URL из спецификации (из поля servers)
+    const specBaseUrl = extractBaseUrlFromSpec(newSpec);
+    if (specBaseUrl) {
+      baseUrl.value = specBaseUrl;
+    } else if (props.collection.spec_url) {
+      // Если в спецификации нет servers, используем origin URL
+      baseUrl.value = extractBaseUrl(props.collection.spec_url);
+    }
   } else if (props.collection.spec_url) {
-    // Иначе возвращаемся к base URL из спецификации
+    // Если спецификация ещё не загружена, используем origin URL
     baseUrl.value = extractBaseUrl(props.collection.spec_url);
   }
 }, { immediate: true });
@@ -202,7 +210,7 @@ function selectEndpoint(endpoint: EndpointItem): void {
     const cachedState = endpointCache.getState(endpoint.method, endpoint.path);
 
     if (cachedState) {
-      // Восстанавливаем сохранённые параметры
+      // Восстанавлива��м сохранённые параметры
       Object.assign(pathParams, cachedState.pathParams);
       Object.assign(queryParams, cachedState.queryParams);
       Object.assign(headerParams, cachedState.headerParams);

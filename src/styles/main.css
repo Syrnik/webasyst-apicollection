@@ -2,8 +2,6 @@
    API Collection — Кастомные стили
    ============================================================ */
 
-@import './variables.css';
-
 /* Дополнительные переменные приложения */
 :root {
   --apic-font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
