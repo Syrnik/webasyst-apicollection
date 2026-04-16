@@ -1,8 +1,5 @@
 (function() {
   "use strict";
-  var __vite_style__ = document.createElement("style");
-  __vite_style__.textContent = "\n/* Переопределяем display для Vue-компонента (штатный drawer управляется через jQuery) */\n.drawer[data-v-1e977bc8] {\n  display: block !important;\n}\n\n.apic-tester[data-v-b6a9843f] {\n  display: flex;\n  height: calc(100vh - 120px);\n}\n.apic-tester__nav[data-v-b6a9843f] {\n  flex: 0 0 20rem;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n  background: var(--background-color-blank);\n  border-right: 1px solid var(--border-color);\n}\n.apic-tester__search[data-v-b6a9843f] {\n  flex: 0 0 auto;\n  padding: 12px;\n  border-bottom: 1px solid var(--border-color);\n}\n.apic-tester__search input[data-v-b6a9843f] {\n  font-size: 12px;\n}\n.apic-tester__tree[data-v-b6a9843f] {\n  flex: 1;\n  overflow-y: auto;\n  min-height: 0;\n}\n.apic-tester__loading[data-v-b6a9843f] {\n  padding: 20px;\n  text-align: center;\n}\n.apic-tester__error[data-v-b6a9843f] {\n  margin: 8px;\n}\n.apic-tester__main[data-v-b6a9843f] {\n  overflow-y: auto;\n}\n.apic-tester__empty[data-v-b6a9843f] {\n  padding: 40px;\n  text-align: center;\n}\n.apic-tester__body[data-v-b6a9843f] {\n  padding: 20px;\n}\n.apic-tester__endpoint-header[data-v-b6a9843f] {\n  margin-bottom: 20px;\n}\n.apic-tester__endpoint-title[data-v-b6a9843f] {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  margin-bottom: 8px;\n}\n.apic-tester__endpoint-path[data-v-b6a9843f] {\n  font-size: 14px;\n  font-weight: 600;\n}\n.apic-tester__endpoint-summary[data-v-b6a9843f] {\n  margin: 0;\n}\n\n.dropdown-item[data-v-10b9faa0]:hover {\n  background-color: var(--background-color);\n}\n.dropdown-item.active[data-v-10b9faa0] {\n  background-color: var(--background-color-info);\n  color: var(--text-color-info);\n}\n/* ============================================================\n   API Collection — Кастомные стили\n   ============================================================ */\n\n/* Дополнительные переменные приложения */\n[data-v-856b39f1]:root {\n  --apic-font-mono: 'JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', monospace;\n}\n\n/* Действия в списке коллекций */\n.apic-col-actions[data-v-856b39f1] {\n  display: flex;\n  gap: 8px;\n  opacity: 0;\n  transition: opacity 0.2s;\n}\n.menu li:hover .apic-col-actions[data-v-856b39f1] {\n  opacity: 1;\n}\n.apic-col-action[data-v-856b39f1] {\n  cursor: pointer;\n  font-size: 14px;\n  padding: 2px 4px;\n  border-radius: 3px;\n  transition: background-color 0.2s;\n}\n.apic-col-action[data-v-856b39f1]:hover {\n  background-color: var(--background-color);\n}\n.apic-col-action--delete[data-v-856b39f1]:hover {\n  background-color: var(--background-color-error);\n}\n\n/* Пустое состояние */\n.apic-empty[data-v-856b39f1] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: 16px;\n  padding: 40px;\n  text-align: center;\n}\n.apic-empty__icon[data-v-856b39f1] {\n  font-size: 48px;\n  opacity: 0.5;\n}\n\n/* Статусы HTTP */\n.apic-status-badge[data-v-856b39f1] {\n  display: inline-block;\n  padding: 2px 6px;\n  border-radius: 3px;\n  font-size: 11px;\n  font-weight: 600;\n  font-family: var(--apic-font-mono);\n}\n.apic-status-0[data-v-856b39f1] {\n  background-color: var(--background-color-error);\n  color: var(--text-color-error);\n}\n.apic-status-2xx[data-v-856b39f1] {\n  background-color: var(--background-color-success);\n  color: var(--text-color-success);\n}\n.apic-status-3xx[data-v-856b39f1] {\n  background-color: var(--background-color-info);\n  color: var(--text-color-info);\n}\n.apic-status-4xx[data-v-856b39f1] {\n  background-color: var(--background-color-warning);\n  color: var(--text-color-warning);\n}\n.apic-status-5xx[data-v-856b39f1] {\n  background-color: var(--background-color-error);\n  color: var(--text-color-error);\n}\n\n/* Панель ответа */\n.apic-response-panel[data-v-856b39f1] {\n  border: 1px solid var(--border-color);\n  border-radius: var(--border-radius);\n  overflow: hidden;\n}\n.apic-response-panel__header[data-v-856b39f1] {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  padding: 12px;\n  background-color: var(--background-color);\n  border-bottom: 1px solid var(--border-color);\n}\n.apic-response-panel__body[data-v-856b39f1] {\n  padding: 12px;\n}\n.apic-response-body[data-v-856b39f1] {\n  font-family: var(--apic-font-mono);\n  font-size: 13px;\n  line-height: 1.6;\n  white-space: pre-wrap;\n  word-wrap: break-word;\n  background-color: var(--background-color);\n  color: var(--text-color);\n  padding: 12px;\n  border-radius: var(--border-radius);\n  max-height: 500px;\n  overflow-y: auto;\n  margin: 0;\n}\n\n/* Схема запроса (drawer) */\n.apic-schema-view[data-v-856b39f1] {\n  font-family: var(--apic-font-mono);\n  font-size: 12px;\n}\n.apic-schema-object[data-v-856b39f1] {\n  margin-bottom: 12px;\n  padding: 12px;\n  background-color: var(--background-color);\n  border-radius: var(--border-radius);\n  border-left: 3px solid var(--accent-color);\n}\n.apic-schema-object-title[data-v-856b39f1] {\n  font-weight: 600;\n  margin-bottom: 4px;\n}\n.apic-schema-object-desc[data-v-856b39f1] {\n  color: var(--text-color-secondary);\n  margin-bottom: 8px;\n  font-size: 11px;\n}\n.apic-schema-properties[data-v-856b39f1] {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n}\n.apic-schema-property[data-v-856b39f1] {\n  padding: 8px;\n  background-color: var(--background-color-blank);\n  border-radius: var(--border-radius);\n}\n.apic-schema-property-name[data-v-856b39f1] {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  margin-bottom: 4px;\n}\n.apic-schema-key[data-v-856b39f1] {\n  font-weight: 600;\n  color: var(--accent-color);\n}\n.apic-schema-type[data-v-856b39f1] {\n  font-size: 10px;\n  padding: 2px 6px;\n  background-color: var(--background-color);\n  border-radius: 3px;\n  color: var(--text-color-secondary);\n}\n.apic-schema-property-desc[data-v-856b39f1] {\n  font-size: 11px;\n  color: var(--text-color-secondary);\n  margin-top: 4px;\n}\n.apic-schema-ref-inline[data-v-856b39f1] {\n  font-size: 11px;\n  color: var(--accent-color);\n  margin-top: 4px;\n}\n.apic-schema-ref-box[data-v-856b39f1] {\n  padding: 8px;\n  background-color: var(--background-color-info);\n  border-radius: var(--border-radius);\n  color: var(--text-color-info);\n}\n.apic-schema-array[data-v-856b39f1] {\n  margin-left: 16px;\n  padding-left: 12px;\n  border-left: 2px solid var(--border-color);\n}\n\n/* Drawer */\n.apic-drawer-section[data-v-856b39f1] {\n  margin-bottom: 20px;\n}\n.apic-drawer-section-title[data-v-856b39f1] {\n  font-weight: 600;\n  margin-bottom: 8px;\n  font-size: 13px;\n}\n.apic-drawer-description[data-v-856b39f1] {\n  padding: 8px 12px;\n  background-color: var(--background-color);\n  border-radius: var(--border-radius);\n  border-left: 3px solid var(--accent-color);\n  margin-bottom: 12px;\n  font-size: 12px;\n}\n.apic-drawer-example[data-v-856b39f1] {\n  font-family: var(--apic-font-mono);\n  font-size: 14px;\n  line-height: 1.6;\n  white-space: pre-wrap;\n  word-wrap: break-word;\n  background-color: var(--background-color);\n  color: var(--text-color);\n  padding: 12px;\n  border-radius: var(--border-radius);\n  max-height: 400px;\n  overflow-y: auto;\n}\n.apic-drawer-empty[data-v-856b39f1] {\n  padding: 40px;\n  text-align: center;\n  color: var(--text-color-secondary);\n}\n\n/* Dropdown окружений */\n.apic-env-dropdown[data-v-856b39f1] {\n  position: relative;\n}\n\n/* История запросов */\n.apic-history[data-v-856b39f1] {\n  margin-top: 20px;\n}\n\n/* Тулбар */\n.apic-toolbar[data-v-856b39f1] {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  padding: 12px 16px;\n  border-bottom: 1px solid var(--border-color);\n}\n\n/* Список заголовков HTTP (dl/dt/dd с Grid) */\n.apic-headers-list[data-v-856b39f1] {\n  display: grid;\n  grid-template-columns: auto 1fr;\n  gap: 0 0.75rem;\n  font-family: var(--apic-font-mono);\n  font-size: 14px;\n  color: var(--text-color);\n  margin: 0;\n}\n.apic-headers-list dt[data-v-856b39f1] {\n  font-weight: 600;\n  text-align: right;\n  margin: 0;\n  padding: 0;\n}\n.apic-headers-list dd[data-v-856b39f1] {\n  margin: 0;\n  padding: 0;\n  word-break: break-word;\n}\n/* ============================================================\n   API Collection — Кастомные стили\n   ============================================================ */\n\n/* Дополнительные переменные приложения */\n:root {\n  --apic-font-mono: 'JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', monospace;\n}\n\n/* Действия в списке коллекций */\n.apic-col-actions {\n  display: flex;\n  gap: 8px;\n  opacity: 0;\n  transition: opacity 0.2s;\n}\n\n.menu li:hover .apic-col-actions {\n  opacity: 1;\n}\n\n.apic-col-action {\n  cursor: pointer;\n  font-size: 14px;\n  padding: 2px 4px;\n  border-radius: 3px;\n  transition: background-color 0.2s;\n}\n\n.apic-col-action:hover {\n  background-color: var(--background-color);\n}\n\n.apic-col-action--delete:hover {\n  background-color: var(--background-color-error);\n}\n\n/* Пустое состояние */\n.apic-empty {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: 16px;\n  padding: 40px;\n  text-align: center;\n}\n\n.apic-empty__icon {\n  font-size: 48px;\n  opacity: 0.5;\n}\n\n/* Статусы HTTP */\n.apic-status-badge {\n  display: inline-block;\n  padding: 2px 6px;\n  border-radius: 3px;\n  font-size: 11px;\n  font-weight: 600;\n  font-family: var(--apic-font-mono);\n}\n\n.apic-status-0 {\n  background-color: var(--background-color-error);\n  color: var(--text-color-error);\n}\n\n.apic-status-2xx {\n  background-color: var(--background-color-success);\n  color: var(--text-color-success);\n}\n\n.apic-status-3xx {\n  background-color: var(--background-color-info);\n  color: var(--text-color-info);\n}\n\n.apic-status-4xx {\n  background-color: var(--background-color-warning);\n  color: var(--text-color-warning);\n}\n\n.apic-status-5xx {\n  background-color: var(--background-color-error);\n  color: var(--text-color-error);\n}\n\n/* Панель ответа */\n.apic-response-panel {\n  border: 1px solid var(--border-color);\n  border-radius: var(--border-radius);\n  overflow: hidden;\n}\n\n.apic-response-panel__header {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  padding: 12px;\n  background-color: var(--background-color);\n  border-bottom: 1px solid var(--border-color);\n}\n\n.apic-response-panel__body {\n  padding: 12px;\n}\n\n.apic-response-body {\n  font-family: var(--apic-font-mono);\n  font-size: 13px;\n  line-height: 1.6;\n  white-space: pre-wrap;\n  word-wrap: break-word;\n  background-color: var(--background-color);\n  color: var(--text-color);\n  padding: 12px;\n  border-radius: var(--border-radius);\n  max-height: 500px;\n  overflow-y: auto;\n  margin: 0;\n}\n\n/* Схема запроса (drawer) */\n.apic-schema-view {\n  font-family: var(--apic-font-mono);\n  font-size: 12px;\n}\n\n.apic-schema-object {\n  margin-bottom: 12px;\n  padding: 12px;\n  background-color: var(--background-color);\n  border-radius: var(--border-radius);\n  border-left: 3px solid var(--accent-color);\n}\n\n.apic-schema-object-title {\n  font-weight: 600;\n  margin-bottom: 4px;\n}\n\n.apic-schema-object-desc {\n  color: var(--text-color-secondary);\n  margin-bottom: 8px;\n  font-size: 11px;\n}\n\n.apic-schema-properties {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n}\n\n.apic-schema-property {\n  padding: 8px;\n  background-color: var(--background-color-blank);\n  border-radius: var(--border-radius);\n}\n\n.apic-schema-property-name {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  margin-bottom: 4px;\n}\n\n.apic-schema-key {\n  font-weight: 600;\n  color: var(--accent-color);\n}\n\n.apic-schema-type {\n  font-size: 10px;\n  padding: 2px 6px;\n  background-color: var(--background-color);\n  border-radius: 3px;\n  color: var(--text-color-secondary);\n}\n\n.apic-schema-property-desc {\n  font-size: 11px;\n  color: var(--text-color-secondary);\n  margin-top: 4px;\n}\n\n.apic-schema-ref-inline {\n  font-size: 11px;\n  color: var(--accent-color);\n  margin-top: 4px;\n}\n\n.apic-schema-ref-box {\n  padding: 8px;\n  background-color: var(--background-color-info);\n  border-radius: var(--border-radius);\n  color: var(--text-color-info);\n}\n\n.apic-schema-array {\n  margin-left: 16px;\n  padding-left: 12px;\n  border-left: 2px solid var(--border-color);\n}\n\n/* Drawer */\n.apic-drawer-section {\n  margin-bottom: 20px;\n}\n\n.apic-drawer-section-title {\n  font-weight: 600;\n  margin-bottom: 8px;\n  font-size: 13px;\n}\n\n.apic-drawer-description {\n  padding: 8px 12px;\n  background-color: var(--background-color);\n  border-radius: var(--border-radius);\n  border-left: 3px solid var(--accent-color);\n  margin-bottom: 12px;\n  font-size: 12px;\n}\n\n.apic-drawer-example {\n  font-family: var(--apic-font-mono);\n  font-size: 14px;\n  line-height: 1.6;\n  white-space: pre-wrap;\n  word-wrap: break-word;\n  background-color: var(--background-color);\n  color: var(--text-color);\n  padding: 12px;\n  border-radius: var(--border-radius);\n  max-height: 400px;\n  overflow-y: auto;\n}\n\n.apic-drawer-empty {\n  padding: 40px;\n  text-align: center;\n  color: var(--text-color-secondary);\n}\n\n/* Dropdown окружений */\n.apic-env-dropdown {\n  position: relative;\n}\n\n/* История запросов */\n.apic-history {\n  margin-top: 20px;\n}\n\n/* Тулбар */\n.apic-toolbar {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  padding: 12px 16px;\n  border-bottom: 1px solid var(--border-color);\n}\n\n/* Список заголовков HTTP (dl/dt/dd с Grid) */\n.apic-headers-list {\n  display: grid;\n  grid-template-columns: auto 1fr;\n  gap: 0 0.75rem;\n  font-family: var(--apic-font-mono);\n  font-size: 14px;\n  color: var(--text-color);\n  margin: 0;\n}\n\n.apic-headers-list dt {\n  font-weight: 600;\n  text-align: right;\n  margin: 0;\n  padding: 0;\n}\n\n.apic-headers-list dd {\n  margin: 0;\n  padding: 0;\n  word-break: break-word;\n}\n/*$vite$:1*/";
-  document.head.appendChild(__vite_style__);
   /**
   * @vue/shared v3.5.30
   * (c) 2018-present Yuxi (Evan) You and Vue contributors
@@ -15920,7 +15917,7 @@
   const _hoisted_5$b = ["onClick"];
   const _hoisted_6$b = ["onClick"];
   const _hoisted_7$b = ["onClick"];
-  const _hoisted_8$9 = { class: "hint" };
+  const _hoisted_8$a = { class: "hint" };
   function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
     return openBlock(), createElementBlock("div", null, [
       $setup.loading ? (openBlock(), createElementBlock("div", _hoisted_1$b, [..._cache[2] || (_cache[2] = [
@@ -15962,7 +15959,7 @@
               ]),
               createBaseVNode("span", null, [
                 createTextVNode(toDisplayString(col.title) + " ", 1),
-                createBaseVNode("span", _hoisted_8$9, toDisplayString(col.is_shared ? "🌐 Общая" : "🔒 Личная"), 1)
+                createBaseVNode("span", _hoisted_8$a, toDisplayString(col.is_shared ? "🌐 Общая" : "🔒 Личная"), 1)
               ])
             ], 8, _hoisted_5$b)
           ], 2);
@@ -16145,8 +16142,8 @@
   };
   const _hoisted_6$a = { class: "fields" };
   const _hoisted_7$a = { class: "field" };
-  const _hoisted_8$8 = { class: "value" };
-  const _hoisted_9$8 = {
+  const _hoisted_8$9 = { class: "value" };
+  const _hoisted_9$9 = {
     key: 0,
     class: "state-error-hint"
   };
@@ -16246,7 +16243,7 @@
             createBaseVNode("div", _hoisted_6$a, [
               createBaseVNode("div", _hoisted_7$a, [
                 _cache[12] || (_cache[12] = createBaseVNode("div", { class: "name" }, "Название *", -1)),
-                createBaseVNode("div", _hoisted_8$8, [
+                createBaseVNode("div", _hoisted_8$9, [
                   withDirectives(createBaseVNode("input", {
                     "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => $setup.form.title = $event),
                     type: "text",
@@ -16256,7 +16253,7 @@
                   }, null, 512), [
                     [vModelText, $setup.form.title]
                   ]),
-                  $setup.errors.title ? (openBlock(), createElementBlock("em", _hoisted_9$8, toDisplayString($setup.errors.title), 1)) : createCommentVNode("", true)
+                  $setup.errors.title ? (openBlock(), createElementBlock("em", _hoisted_9$9, toDisplayString($setup.errors.title), 1)) : createCommentVNode("", true)
                 ])
               ]),
               createBaseVNode("div", _hoisted_10$5, [
@@ -16494,6 +16491,34 @@
     if (numCode < 400) return "apic-status-3xx";
     if (numCode < 500) return "apic-status-4xx";
     return "apic-status-5xx";
+  }
+  const HTTP_STATUS_DESCRIPTIONS = {
+    100: "Continue — продолжайте отправку запроса",
+    101: "Switching Protocols — сервер переключает протокол",
+    200: "OK — запрос выполнен успешно",
+    201: "Created — ресурс успешно создан",
+    202: "Accepted — запрос принят в обработку",
+    204: "No Content — запрос выполнен, тело ответа пустое",
+    301: "Moved Permanently — ресурс перемещён навсегда",
+    302: "Found — временное перенаправление",
+    304: "Not Modified — ресурс не изменился, используйте кэш",
+    400: "Bad Request — некорректный запрос",
+    401: "Unauthorized — требуется аутентификация",
+    403: "Forbidden — доступ запрещён",
+    404: "Not Found — ресурс не найден",
+    405: "Method Not Allowed — метод не поддерживается",
+    409: "Conflict — конфликт с текущим состоянием ресурса",
+    410: "Gone — ресурс удалён навсегда",
+    422: "Unprocessable Entity — ошибка валидации данных",
+    429: "Too Many Requests — превышен лимит запросов",
+    500: "Internal Server Error — внутренняя ошибка сервера",
+    502: "Bad Gateway — неверный ответ от вышестоящего сервера",
+    503: "Service Unavailable — сервис временно недоступен",
+    504: "Gateway Timeout — вышестоящий сервер не ответил вовремя"
+  };
+  function statusDescription(code) {
+    const numCode = parseInt(String(code), 10);
+    return HTTP_STATUS_DESCRIPTIONS[numCode] ?? "";
   }
   function methodBadgeClass(method) {
     const colors = {
@@ -16911,11 +16936,11 @@
     class: "apic-drawer-empty text-center custom-py-40 custom-px-20"
   };
   const _hoisted_7$8 = { class: "custom-mt-20 text-left" };
-  const _hoisted_8$7 = {
+  const _hoisted_8$8 = {
     class: "custom-mt-12 custom-p-12",
     style: { "font-size": "11px", "background": "var(--background-color)", "border-radius": "4px", "overflow": "auto" }
   };
-  const _hoisted_9$7 = {
+  const _hoisted_9$8 = {
     key: 1,
     class: "custom-pt-20"
   };
@@ -16984,9 +17009,9 @@
                 ], -1)),
                 createBaseVNode("details", _hoisted_7$8, [
                   _cache[7] || (_cache[7] = createBaseVNode("summary", { style: { "cursor": "pointer", "color": "var(--text-color-secondary)" } }, "Отладка", -1)),
-                  createBaseVNode("pre", _hoisted_8$7, toDisplayString(JSON.stringify($props.endpoint.op, null, 2)), 1)
+                  createBaseVNode("pre", _hoisted_8$8, toDisplayString(JSON.stringify($props.endpoint.op, null, 2)), 1)
                 ])
-              ])) : (openBlock(), createElementBlock("div", _hoisted_9$7, [
+              ])) : (openBlock(), createElementBlock("div", _hoisted_9$8, [
                 $setup.requestBody.description ? (openBlock(), createElementBlock("div", _hoisted_10$4, toDisplayString($setup.requestBody.description), 1)) : createCommentVNode("", true),
                 $setup.activeTab === "schema" ? (openBlock(), createElementBlock("div", _hoisted_11$4, [
                   $setup.schema ? (openBlock(), createElementBlock("div", {
@@ -17024,7 +17049,7 @@
       ])
     ]);
   }
-  const RequestBodyDrawer = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8], ["__scopeId", "data-v-1e977bc8"], ["__file", "RequestBodyDrawer.vue"]]);
+  const RequestBodyDrawer = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8], ["__file", "RequestBodyDrawer.vue"]]);
   const _sfc_main$7 = /* @__PURE__ */ defineComponent({
     __name: "RequestForm",
     props: {
@@ -17075,8 +17100,8 @@
     style: { "color": "var(--text-color-error)" }
   };
   const _hoisted_7$7 = { class: "value" };
-  const _hoisted_8$6 = ["value", "onInput", "placeholder"];
-  const _hoisted_9$6 = {
+  const _hoisted_8$7 = ["value", "onInput", "placeholder"];
+  const _hoisted_9$7 = {
     key: 0,
     class: "hint smaller"
   };
@@ -17144,8 +17169,8 @@
                   onInput: ($event) => $setup.emit("update:path-params", { ...$props.pathParams, [param.name]: $event.target.value }),
                   type: "text",
                   placeholder: param.example || param.default || ""
-                }, null, 40, _hoisted_8$6),
-                param.schema?.description ? (openBlock(), createElementBlock("em", _hoisted_9$6, toDisplayString(param.schema.description), 1)) : createCommentVNode("", true)
+                }, null, 40, _hoisted_8$7),
+                param.schema?.description ? (openBlock(), createElementBlock("em", _hoisted_9$7, toDisplayString(param.schema.description), 1)) : createCommentVNode("", true)
               ])
             ]);
           }), 128))
@@ -17272,6 +17297,8 @@
       }
       const __returned__ = { props, formattedBody, formatResponseSize, copyResponse, get statusClass() {
         return statusClass;
+      }, get statusDescription() {
+        return statusDescription;
       } };
       Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
       return __returned__;
@@ -17283,32 +17310,38 @@
   };
   const _hoisted_2$6 = { class: "apic-response-panel__header" };
   const _hoisted_3$6 = {
-    style: { "margin-left": "auto", "font-size": "11px" },
-    class: "hint"
+    key: 0,
+    class: "hint smaller"
   };
-  const _hoisted_4$6 = { class: "apic-response-panel__body" };
-  const _hoisted_5$6 = {
+  const _hoisted_4$6 = {
+    style: { "margin-left": "auto" },
+    class: "hint smaller"
+  };
+  const _hoisted_5$6 = { class: "apic-response-panel__body" };
+  const _hoisted_6$6 = {
     key: 0,
     class: "custom-mb-16"
   };
-  const _hoisted_6$6 = { class: "apic-headers-list" };
-  const _hoisted_7$6 = { class: "apic-response-body" };
+  const _hoisted_7$6 = { class: "apic-headers-list" };
+  const _hoisted_8$6 = { class: "apic-response-body-wrap" };
+  const _hoisted_9$6 = { class: "apic-response-body" };
   function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
     return openBlock(), createElementBlock("div", _hoisted_1$6, [
       createBaseVNode("div", _hoisted_2$6, [
-        _cache[0] || (_cache[0] = createBaseVNode("span", { class: "semibold" }, "Ответ", -1)),
+        _cache[0] || (_cache[0] = createBaseVNode("span", { class: "semibold" }, "Код ответа:", -1)),
         createBaseVNode("span", {
-          class: normalizeClass([$setup.statusClass($props.response.response_status), "apic-status-badge"])
+          class: normalizeClass(["badge squared", $setup.statusClass($props.response.response_status)])
         }, toDisplayString($props.response.response_status || "ERROR"), 3),
-        createBaseVNode("span", _hoisted_3$6, toDisplayString($setup.formatResponseSize($props.response.response_body)), 1)
+        $setup.statusDescription($props.response.response_status) ? (openBlock(), createElementBlock("span", _hoisted_3$6, toDisplayString($setup.statusDescription($props.response.response_status)), 1)) : createCommentVNode("", true),
+        createBaseVNode("span", _hoisted_4$6, toDisplayString($setup.formatResponseSize($props.response.response_body)), 1)
       ]),
-      createBaseVNode("div", _hoisted_4$6, [
-        $props.response.response_headers && Object.keys($props.response.response_headers).length > 0 ? (openBlock(), createElementBlock("div", _hoisted_5$6, [
+      createBaseVNode("div", _hoisted_5$6, [
+        $props.response.response_headers && Object.keys($props.response.response_headers).length > 0 ? (openBlock(), createElementBlock("div", _hoisted_6$6, [
           _cache[1] || (_cache[1] = createBaseVNode("div", {
             class: "semibold",
             style: { "margin-bottom": "10px", "font-size": "14px", "color": "var(--text-color)" }
           }, "HEADERS", -1)),
-          createBaseVNode("dl", _hoisted_6$6, [
+          createBaseVNode("dl", _hoisted_7$6, [
             (openBlock(true), createElementBlock(Fragment, null, renderList($props.response.response_headers, (value, key) => {
               return openBlock(), createElementBlock(Fragment, { key }, [
                 createBaseVNode("dt", null, toDisplayString(key) + ":", 1),
@@ -17318,18 +17351,19 @@
           ])
         ])) : createCommentVNode("", true),
         createBaseVNode("div", null, [
-          createBaseVNode("div", { style: { "margin-bottom": "10px", "display": "flex", "justify-content": "space-between", "align-items": "center" } }, [
-            _cache[2] || (_cache[2] = createBaseVNode("span", {
-              class: "semibold",
-              style: { "font-size": "14px", "color": "var(--text-color)" }
-            }, "BODY", -1)),
-            createBaseVNode("button", {
-              type: "button",
-              class: "button light-gray small",
+          _cache[3] || (_cache[3] = createBaseVNode("div", { class: "apic-response-body-label" }, "BODY", -1)),
+          createBaseVNode("div", _hoisted_8$6, [
+            createBaseVNode("a", {
+              href: "javascript:void(0)",
+              class: "apic-copy-btn",
+              style: { "color": "var(--apic-code-color)" },
+              title: "Копировать",
               onClick: $setup.copyResponse
-            }, " 📋 Копировать ")
-          ]),
-          createBaseVNode("pre", _hoisted_7$6, toDisplayString($setup.formattedBody), 1)
+            }, [..._cache[2] || (_cache[2] = [
+              createBaseVNode("i", { class: "far fa-copy" }, null, -1)
+            ])]),
+            createBaseVNode("pre", _hoisted_9$6, toDisplayString($setup.formattedBody), 1)
+          ])
         ])
       ])
     ]);
@@ -19827,7 +19861,7 @@
       ])
     ]);
   }
-  const ApiTester = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4], ["__scopeId", "data-v-b6a9843f"], ["__file", "ApiTester.vue"]]);
+  const ApiTester = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4], ["__file", "ApiTester.vue"]]);
   function useEnvironments() {
     const environments = /* @__PURE__ */ ref([]);
     const loading = /* @__PURE__ */ ref(false);
@@ -20021,7 +20055,7 @@
       ])) : createCommentVNode("", true)
     ]);
   }
-  const EnvironmentSelector = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3], ["__scopeId", "data-v-10b9faa0"], ["__file", "EnvironmentSelector.vue"]]);
+  const EnvironmentSelector = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3], ["__file", "EnvironmentSelector.vue"]]);
   const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     __name: "EnvironmentManager",
     emits: ["close", "add", "edit", "changed"],
@@ -20736,7 +20770,7 @@
       }, null, 8, ["initial"])) : createCommentVNode("", true)
     ]);
   }
-  const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-856b39f1"], ["__file", "App.vue"]]);
+  const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "App.vue"]]);
   function waitForJQuery() {
     return new Promise((resolve2) => {
       if (typeof window.$ !== "undefined") {

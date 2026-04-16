@@ -1,11 +1,14 @@
 <template>
   <div class="apic-response-panel" style="margin-top:20px">
     <div class="apic-response-panel__header">
-      <span class="semibold">Ответ</span>
-      <span :class="statusClass(response.response_status)" class="apic-status-badge">
+      <span class="semibold">Код ответа:</span>
+      <span class="badge squared" :class="statusClass(response.response_status)">
         {{ response.response_status || 'ERROR' }}
       </span>
-      <span style="margin-left:auto;font-size:11px" class="hint">
+      <span v-if="statusDescription(response.response_status)" class="hint smaller">
+        {{ statusDescription(response.response_status) }}
+      </span>
+      <span style="margin-left:auto" class="hint smaller">
         {{ formatResponseSize(response.response_body) }}
       </span>
     </div>
@@ -24,17 +27,19 @@
       
       <!-- Тело ответа -->
       <div>
-        <div style="margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">
-          <span class="semibold" style="font-size:14px;color:var(--text-color)">BODY</span>
-          <button 
-            type="button" 
-            class="button light-gray small" 
+        <div class="apic-response-body-label">BODY</div>
+        <div class="apic-response-body-wrap">
+          <a
+            href="javascript:void(0)"
+            class="apic-copy-btn"
+            style="color:var(--apic-code-color)"
+            title="Копировать"
             @click="copyResponse"
           >
-            📋 Копировать
-          </button>
+            <i class="far fa-copy"></i>
+          </a>
+          <pre class="apic-response-body">{{ formattedBody }}</pre>
         </div>
-        <pre class="apic-response-body">{{ formattedBody }}</pre>
       </div>
     </div>
   </div>
@@ -42,7 +47,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { statusClass, formatJson, copyToClipboard } from '@/utils/formatters';
+import { statusClass, statusDescription, formatJson, copyToClipboard } from '@/utils/formatters';
 
 interface Props {
   response: {

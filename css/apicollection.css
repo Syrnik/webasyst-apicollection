@@ -103,12 +103,48 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    font-size: 13px;
     font-weight: 600;
 }
 
 .apic-response-panel__body {
     padding: 12px 16px;
+}
+
+.apic-response-body-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 10px;
+}
+
+.apic-response-body-wrap {
+    position: relative;
+}
+
+.apic-copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 0.375rem;
+    background: transparent;
+    color: var(--apic-code-color);
+    font-size: 15px;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.15s, background 0.15s;
+}
+
+.apic-copy-btn:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.12);
 }
 
 /* Тёмный блок кода — намеренный, не меняется с темой */
@@ -139,21 +175,12 @@
     overflow-y: auto;
 }
 
-/* Статус-коды */
-.apic-status-badge {
-    display: inline-block;
-    font-family: var(--apic-font-mono);
-    font-weight: 700;
-    font-size: 14px;
-    padding: 2px 8px;
-    border-radius: 0.375rem;
-}
-
-.apic-status-2xx { background: var(--apic-get-bg);    color: var(--apic-get-color); }
-.apic-status-3xx { background: var(--apic-post-bg);   color: var(--apic-post-color); }
-.apic-status-4xx { background: var(--apic-put-bg);    color: var(--apic-put-color); }
-.apic-status-5xx { background: var(--apic-delete-bg); color: var(--apic-delete-color); }
-.apic-status-0   { background: color-mix(in srgb, var(--text-color) 10%, transparent); color: var(--text-color-hint); }
+/* Статус-коды — модификаторы цвета для .badge */
+.badge.apic-status-2xx { background: var(--green); }
+.badge.apic-status-3xx { background: var(--blue); }
+.badge.apic-status-4xx { background: var(--orange); }
+.badge.apic-status-5xx { background: var(--red); }
+.badge.apic-status-0   { background: var(--gray); }
 
 /* ── История запросов ─────────────────────────────────────── */
 
@@ -390,4 +417,122 @@
 .apic-empty__icon {
     font-size: 48px;
     opacity: 0.5;
+}
+
+/* ── Список заголовков HTTP (dl/dt/dd с Grid) ─────────────── */
+
+.apic-headers-list {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2px 12px;
+    font-family: var(--apic-font-mono);
+    font-size: 13px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.apic-headers-list dt {
+    font-weight: 600;
+    text-align: right;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.apic-headers-list dd {
+    margin: 0;
+    padding: 0;
+    word-break: break-all;
+}
+
+/* ── API Tester layout ────────────────────────────────────── */
+
+.apic-tester {
+    display: flex;
+    height: calc(100vh - 120px);
+}
+
+.apic-tester__nav {
+    flex: 0 0 20rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--background-color-blank);
+    border-right: 1px solid var(--border-color);
+}
+
+.apic-tester__search {
+    flex: 0 0 auto;
+    padding: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.apic-tester__search input {
+    font-size: 12px;
+}
+
+.apic-tester__tree {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+}
+
+.apic-tester__loading {
+    padding: 20px;
+    text-align: center;
+}
+
+.apic-tester__error {
+    margin: 8px;
+}
+
+.apic-tester__main {
+    overflow-y: auto;
+}
+
+.apic-tester__empty {
+    padding: 40px;
+    text-align: center;
+}
+
+.apic-tester__body {
+    padding: 20px;
+}
+
+.apic-tester__endpoint-header {
+    margin-bottom: 20px;
+}
+
+.apic-tester__endpoint-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.apic-tester__endpoint-path {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.apic-tester__endpoint-summary {
+    margin: 0;
+}
+
+/* ── Drawer (RequestBodyDrawer) ───────────────────────────── */
+
+/* Vue-компонент drawer управляется своей логикой, не jQuery */
+.drawer {
+    display: block !important;
+}
+
+/* ── Dropdown окружений (EnvironmentSelector) ─────────────── */
+
+.apic-env-dropdown .dropdown-item:hover {
+    background-color: var(--background-color);
+}
+
+.apic-env-dropdown .dropdown-item.active {
+    background-color: var(--background-color-info);
+    color: var(--text-color-info);
 }

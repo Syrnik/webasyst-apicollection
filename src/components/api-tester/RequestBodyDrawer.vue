@@ -166,10 +166,3 @@ async function copyExample(): Promise<void> {
   }
 }
 </script>
-
-<style scoped>
-/* Переопределяем display для Vue-компонента (штатный drawer управляется через jQuery) */
-.drawer {
-  display: block !important;
-}
-</style>

@@ -132,14 +132,3 @@ watch(showDropdown, (show) => {
 // Expose для вызова из родителя
 defineExpose({ load });
 </script>
-
-<style scoped>
-.dropdown-item:hover {
-  background-color: var(--background-color);
-}
-
-.dropdown-item.active {
-  background-color: var(--background-color-info);
-  color: var(--text-color-info);
-}
-</style>

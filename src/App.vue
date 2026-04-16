@@ -229,7 +229,3 @@ watch(selectedCollection, async (col) => {
   }
 });
 </script>
-
-<style scoped>
-@import '@/styles/main.css';
-</style>
