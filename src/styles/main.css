@@ -4,7 +4,7 @@
 
 /* Дополнительные переменные приложения */
 :root {
-  --apic-font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
+  --apic-font-mono: 'JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
 }
 
 /* Действия в списке коллекций */
