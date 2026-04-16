@@ -454,16 +454,31 @@ class apicollectionBackendActions extends waJsonActions
             // Base URL: ручной ввод > окружение > коллекция
             $baseUrlOverride = trim((string)waRequest::post('base_url'));
             if ($baseUrlOverride) {
-                $baseUrl = rtrim($baseUrlOverride, '/');
+                $rawBaseUrl = $baseUrlOverride;
             } elseif ($environment && !empty($environment['base_url'])) {
-                $baseUrl = rtrim($environment['base_url'], '/');
+                $rawBaseUrl = $environment['base_url'];
             } else {
-                $baseUrl = rtrim($this->extractBaseUrl($collection['spec_url']), '/');
+                $rawBaseUrl = $this->extractBaseUrl($collection['spec_url']);
             }
-            $url = $baseUrl . '/' . ltrim($path, '/');
 
-            if (!empty($queryParams) && is_array($queryParams)) {
-                $url .= '?' . http_build_query($queryParams);
+            // Разбираем base URL: он может содержать собственные query-параметры
+            $parsedBase = parse_url($rawBaseUrl);
+            $baseOrigin  = ($parsedBase['scheme'] ?? 'https') . '://' . ($parsedBase['host'] ?? '');
+            if (!empty($parsedBase['port'])) {
+                $baseOrigin .= ':' . $parsedBase['port'];
+            }
+            $basePath  = rtrim($parsedBase['path'] ?? '', '/');
+            $baseQuery = [];
+            if (!empty($parsedBase['query'])) {
+                parse_str($parsedBase['query'], $baseQuery);
+            }
+
+            $url = $baseOrigin . $basePath . '/' . ltrim($path, '/');
+
+            // Параметры base URL + параметры эндпойнта (эндпойнт имеет приоритет)
+            $mergedQuery = array_merge($baseQuery, is_array($queryParams) ? $queryParams : []);
+            if (!empty($mergedQuery)) {
+                $url .= '?' . http_build_query($mergedQuery);
             }
 
             if (!preg_match('#^https?://#i', $url)) {
