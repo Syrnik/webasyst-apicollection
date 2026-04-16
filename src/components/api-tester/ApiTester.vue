@@ -1,26 +1,25 @@
 <template>
-  <div class="flexbox" style="height:calc(100vh - 120px)">
+  <div class="apic-tester">
     <!-- Сайдбар с деревом endpoints -->
-    <div class="sidebar blank width-20rem flexbox">
-      <div class="sidebar-header" style="padding:12px;border-bottom:1px solid var(--border-color)">
-        <input 
-          v-model="searchQuery" 
-          type="text" 
-          placeholder="Поиск endpoints..." 
+    <div class="apic-tester__nav">
+      <div class="apic-tester__search">
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Поиск endpoints..."
           class="full-width"
-          style="font-size:12px"
         >
       </div>
-      
-      <div class="sidebar-body">
-        <div v-if="loading" style="padding:20px;text-align:center">
+
+      <div class="apic-tester__tree">
+        <div v-if="loading" class="apic-tester__loading">
           <span class="spinner wa-animation-spin"></span>
         </div>
-        
-        <div v-else-if="error" class="alert danger" style="margin:8px">
+
+        <div v-else-if="error" class="alert danger apic-tester__error">
           {{ error }}
         </div>
-        
+
         <EndpointTree
           v-else
           :tag-tree="filteredTree"
@@ -29,27 +28,27 @@
         />
       </div>
     </div>
-    
+
     <!-- Основная область -->
-    <div class="content" style="overflow-y:auto">
-      <div v-if="!activeEndpoint" style="padding:40px;text-align:center">
+    <div class="content apic-tester__main">
+      <div v-if="!activeEndpoint" class="apic-tester__empty">
         <p class="hint">Выберите endpoint из списка слева</p>
       </div>
-      
-      <div v-else style="padding:20px">
+
+      <div v-else class="apic-tester__body">
         <!-- Заголовок endpoint -->
-        <div style="margin-bottom:20px">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+        <div class="apic-tester__endpoint-header">
+          <div class="apic-tester__endpoint-title">
             <span :class="methodBadgeClass(activeEndpoint.method)">
               {{ activeEndpoint.method }}
             </span>
-            <code style="font-size:14px;font-weight:600">{{ activeEndpoint.path }}</code>
+            <code class="apic-tester__endpoint-path">{{ activeEndpoint.path }}</code>
           </div>
-          <p v-if="activeEndpoint.op.summary" class="hint" style="margin:0">
+          <p v-if="activeEndpoint.op.summary" class="hint apic-tester__endpoint-summary">
             {{ activeEndpoint.op.summary }}
           </p>
         </div>
-        
+
         <!-- Форма запроса -->
         <RequestForm
           :endpoint="activeEndpoint"
@@ -68,14 +67,14 @@
           @update:header-params="Object.assign(headerParams, $event)"
           @update:body-content="bodyContent = $event"
         />
-        
+
         <!-- Ответ -->
         <ResponseViewer
           v-if="response"
           :response="response"
           :executing="executing"
         />
-        
+
         <!-- История -->
         <RequestHistory
           :collection-id="collection.id"
@@ -277,3 +276,77 @@ function replayRequest(historyItem: any): void {
   }
 }
 </script>
+
+<style scoped>
+.apic-tester {
+  display: flex;
+  height: calc(100vh - 120px);
+}
+
+.apic-tester__nav {
+  flex: 0 0 20rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--background-color-blank);
+  border-right: 1px solid var(--border-color);
+}
+
+.apic-tester__search {
+  flex: 0 0 auto;
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.apic-tester__search input {
+  font-size: 12px;
+}
+
+.apic-tester__tree {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.apic-tester__loading {
+  padding: 20px;
+  text-align: center;
+}
+
+.apic-tester__error {
+  margin: 8px;
+}
+
+.apic-tester__main {
+  overflow-y: auto;
+}
+
+.apic-tester__empty {
+  padding: 40px;
+  text-align: center;
+}
+
+.apic-tester__body {
+  padding: 20px;
+}
+
+.apic-tester__endpoint-header {
+  margin-bottom: 20px;
+}
+
+.apic-tester__endpoint-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.apic-tester__endpoint-path {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.apic-tester__endpoint-summary {
+  margin: 0;
+}
+</style>
