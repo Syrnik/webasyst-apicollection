@@ -457,8 +457,10 @@ class apicollectionBackendActions extends waJsonActions
                 $rawBaseUrl = $baseUrlOverride;
             } elseif ($environment && !empty($environment['base_url'])) {
                 $rawBaseUrl = $environment['base_url'];
-            } else {
+            } elseif (!empty($collection['spec_url'])) {
                 $rawBaseUrl = $this->extractBaseUrl($collection['spec_url']);
+            } else {
+                throw new waException('Не задан базовый URL. Укажите его вручную или выберите окружение с заполненным base_url.');
             }
 
             // Разбираем base URL: он может содержать собственные query-параметры
