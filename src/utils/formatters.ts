@@ -15,16 +15,49 @@ export function formatJson(str: string): string {
 }
 
 /**
- * Возвращает CSS-класс для HTTP-статуса
+ * Возвращает CSS-класс цвета для бейджа HTTP-статуса (используется вместе с .badge)
  */
 export function statusClass(code: number | string): string {
   const numCode = parseInt(String(code), 10);
-  
+
   if (!numCode || isNaN(numCode)) return 'apic-status-0';
   if (numCode < 300) return 'apic-status-2xx';
   if (numCode < 400) return 'apic-status-3xx';
   if (numCode < 500) return 'apic-status-4xx';
   return 'apic-status-5xx';
+}
+
+const HTTP_STATUS_DESCRIPTIONS: Record<number, string> = {
+  100: 'Continue — продолжайте отправку запроса',
+  101: 'Switching Protocols — сервер переключает протокол',
+  200: 'OK — запрос выполнен успешно',
+  201: 'Created — ресурс успешно создан',
+  202: 'Accepted — запрос принят в обработку',
+  204: 'No Content — запрос выполнен, тело ответа пустое',
+  301: 'Moved Permanently — ресурс перемещён навсегда',
+  302: 'Found — временное перенаправление',
+  304: 'Not Modified — ресурс не изменился, используйте кэш',
+  400: 'Bad Request — некорректный запрос',
+  401: 'Unauthorized — требуется аутентификация',
+  403: 'Forbidden — доступ запрещён',
+  404: 'Not Found — ресурс не найден',
+  405: 'Method Not Allowed — метод не поддерживается',
+  409: 'Conflict — конфликт с текущим состоянием ресурса',
+  410: 'Gone — ресурс удалён навсегда',
+  422: 'Unprocessable Entity — ошибка валидации данных',
+  429: 'Too Many Requests — превышен лимит запросов',
+  500: 'Internal Server Error — внутренняя ошибка сервера',
+  502: 'Bad Gateway — неверный ответ от вышестоящего сервера',
+  503: 'Service Unavailable — сервис временно недоступен',
+  504: 'Gateway Timeout — вышестоящий сервер не ответил вовремя',
+};
+
+/**
+ * Возвращает расшифровку HTTP-статус кода
+ */
+export function statusDescription(code: number | string): string {
+  const numCode = parseInt(String(code), 10);
+  return HTTP_STATUS_DESCRIPTIONS[numCode] ?? '';
 }
 
 /**
