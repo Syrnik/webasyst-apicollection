@@ -2,7 +2,7 @@
 return [
     'name'    => 'API Collection',
     'icon'    => 'img/app-icon.svg',
-    'version' => '1.2.1',
+    'version' => '1.2.2',
     'vendor'  => '670917',
     'csrf'    => true,
     'ui'      => '2.0',

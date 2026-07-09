@@ -135,7 +135,8 @@ export function timeAgo(dateString: string): string {
 /**
  * Обрезает строку до указанной длины с добавлением "..."
  */
-export function truncate(str: string, maxLength: number): string {
+export function truncate(str: string | null | undefined, maxLength: number): string {
+  if (!str) return '';
   if (str.length <= maxLength) return str;
   return str.substring(0, maxLength - 3) + '...';
 }

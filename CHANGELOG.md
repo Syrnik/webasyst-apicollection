@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.2]
+
+### Fixed
+
+- Fatal `TypeError` in the environment list when an environment's Base URL is empty
+  (the backend stores `NULL` for an empty value). `truncate()` dereferenced the value
+  unconditionally, so the environment manager dialog crashed and closed immediately
+  when trying to edit such an environment (#77.2).
+
 ## [1.2.1]
 
 ### Added
@@ -44,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Uploaded files are now stored in a protected directory instead of a public one.
 
-[Unreleased]: https://github.com/Syrnik/webasyst-apicollection/compare/1.2.1...HEAD
+[Unreleased]: https://github.com/Syrnik/webasyst-apicollection/compare/1.2.2...HEAD
+[1.2.2]: https://github.com/Syrnik/webasyst-apicollection/compare/1.2.1...1.2.2
 [1.2.1]: https://github.com/Syrnik/webasyst-apicollection/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/Syrnik/webasyst-apicollection/releases/tag/1.2.0
