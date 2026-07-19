@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fatal `TypeError` when sending a POST/PUT/PATCH request with an empty body. The proxy
+  passed `null` as the request body, and `waNet::encodeRequest()` fed it to
+  `http_build_query()`, which throws on PHP 8. The body now defaults to an empty string
+  so requests with no payload go through (#77.3).
+
 ## [1.2.2]
 
 ### Fixed

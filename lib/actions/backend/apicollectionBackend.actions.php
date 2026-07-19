@@ -531,8 +531,10 @@ class apicollectionBackendActions extends waJsonActions
                 is_array($extraHeaders) ? $extraHeaders : []
             );
 
-            // Тело запроса
-            $postData = null;
+            // Тело запроса.
+            // Пустая строка (не null!) — иначе waNet::encodeRequest() для методов
+            // с телом уходит в http_build_query(null) и падает с Fatal error на PHP 8.
+            $postData = '';
             if (in_array($method, ['POST', 'PUT', 'PATCH']) && $bodyRaw !== '') {
                 $postData = $bodyRaw;
                 if (!isset($headers['Content-Type'])) {
